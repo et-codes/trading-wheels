@@ -20,6 +20,8 @@ def create_user():
     except Exception as err:
         return f'Error creating user: {err=}', 500
 
+def get_user(username):
+    pass
 
 def login(username):
     pass

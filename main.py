@@ -30,6 +30,7 @@ app.add_url_rule('/', view_func=views.home)
 
 # User-related endpoints
 app.add_url_rule('/user', view_func=users.create_user, methods=['POST'])
+app.add_url_rule('/user/<username>', view_func=users.get_user)
 app.add_url_rule('/login/<username>', view_func=users.login)
 app.add_url_rule('/logout/<username>', view_func=users.logout)
 
