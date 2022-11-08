@@ -4,13 +4,15 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
 
-# Load environment variables
 load_dotenv()
 SECRET_KEY = os.environ.get('SECRET_KEY')
+TOKEN_EXPIRATION_IN_HOURS = 24
 
 
+# Create new token
 def create(username):
-    expiration_date = datetime.today() + timedelta(hours=24)
+    expiration_date = datetime.today() + \
+        timedelta(hours=TOKEN_EXPIRATION_IN_HOURS)
     payload_data = {
         "username": username,
         "expiration": expiration_date.isoformat()
@@ -23,6 +25,7 @@ def create(username):
     return token
 
 
+# Validate token
 def validate(token):
     try:
         payload = jwt.decode(
@@ -35,6 +38,7 @@ def validate(token):
         return False
 
 
+# Check if token is expired
 def is_expired(token):
     try:
         payload = jwt.decode(
