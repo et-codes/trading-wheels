@@ -2,6 +2,7 @@ import os
 from database import db
 from dotenv import load_dotenv
 from flask import Flask
+from models import User
 
 
 load_dotenv()
