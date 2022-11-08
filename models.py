@@ -15,7 +15,7 @@ class User(db.Model):
     trades = db.relationship('Trade', backref='user')
 
     def __repr__(self):
-        return f"User(id='{self.id}', username='{self.username}')"
+        return f"User(username='{self.username}', password=<...>)"
 
     def json(self):
         return {
@@ -40,9 +40,9 @@ class Trade(db.Model):
         server_default=func.now(), nullable=False)
     
     def __repr__(self):
-        return f"Trade(id='{self.id}', user_id='{self.user_id}', " + \
-            f"symbol='{self.symbol}', shares='{self.shares}', " + \
-            f"price='{self.price}', date='{self.date}')"
+        return f"Trade(user_id={self.user_id}, " + \
+            f"symbol='{self.symbol}', shares={self.shares}, " + \
+            f"price={self.price}, date='{self.date}')"
     
     def json(self):
         return {
