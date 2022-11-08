@@ -8,8 +8,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    created_on = db.Column(db.TIMESTAMP(
-        timezone=True), server_default=func.now())
+    created_on = db.Column(db.TIMESTAMP(timezone=True),
+        server_default=func.now())
     last_login = db.Column(db.TIMESTAMP(timezone=True))
     last_logout = db.Column(db.TIMESTAMP(timezone=True))
     trades = db.relationship('Trade', backref='user')
@@ -36,5 +36,5 @@ class Trade(db.Model):
     symbol = db.Column(db.String(5), nullable=False)
     shares = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
-    date = db.Column(db.TIMESTAMP(
-        timezone=True), server_default=func.now(), nullable=False)
+    date = db.Column(db.TIMESTAMP(timezone=True),
+        server_default=func.now(), nullable=False)
