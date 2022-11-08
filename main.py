@@ -2,7 +2,7 @@ import os
 from database import db
 from dotenv import load_dotenv
 from flask import Flask
-from models import User
+from models import User, Trade
 
 
 load_dotenv()
@@ -15,6 +15,7 @@ db.init_app(app)
 
 # Create tables if they don't already exist
 with app.app_context():
+    # db.drop_all()
     db.create_all()
 
 

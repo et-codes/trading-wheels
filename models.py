@@ -1,4 +1,5 @@
 from database import db
+from sqlalchemy.sql import func
 
 
 class User(db.Model):
@@ -7,8 +8,11 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
+    created_on = db.Column(db.TIMESTAMP(
+        timezone=True), server_default=func.now())
     last_login = db.Column(db.TIMESTAMP(timezone=True))
     last_logout = db.Column(db.TIMESTAMP(timezone=True))
+    trades = db.relationship('Trade', backref='user')
 
     def __repr__(self):
         return f"User(id='{self.id}', username='{self.username}')"
@@ -21,3 +25,16 @@ class User(db.Model):
             "last_login": self.last_login,
             "last_logout": self.last_logout
         }
+
+
+class Trade(db.Model):
+    __tablename__ = 'trades'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+        nullable=False)
+    symbol = db.Column(db.String(5), nullable=False)
+    shares = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    date = db.Column(db.TIMESTAMP(
+        timezone=True), server_default=func.now(), nullable=False)
