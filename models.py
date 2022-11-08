@@ -38,3 +38,18 @@ class Trade(db.Model):
     price = db.Column(db.Float, nullable=False)
     date = db.Column(db.TIMESTAMP(timezone=True),
         server_default=func.now(), nullable=False)
+    
+    def __repr__(self):
+        return f"Trade(id='{self.id}', user_id='{self.user_id}', " + \
+            f"symbol='{self.symbol}', shares='{self.shares}', " + \
+            f"price='{self.price}', date='{self.date}')"
+    
+    def json(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "symbol": self.symbol,
+            "shares": self.shares,
+            "price": self.price,
+            "date": self.date
+        }
