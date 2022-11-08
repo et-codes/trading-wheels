@@ -1,4 +1,5 @@
 import os
+import sys
 from database import db
 from dotenv import load_dotenv
 from flask import Flask
@@ -14,8 +15,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 db.init_app(app)
 
 # Create tables if they don't already exist
+# Drop all tables if 'rebuild' argument used on command line
 with app.app_context():
-    # db.drop_all()
+    if len(sys.argv) > 1 and sys.argv[1].lower() == 'rebuild':
+        print('Rebuilding database tables...')
+        db.drop_all()
     db.create_all()
 
 
