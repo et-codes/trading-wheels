@@ -31,7 +31,22 @@ def get_user(username):
 
 def delete_user():
     (username, password) = request.json.values()
+    password = password.encode('utf-8')
 
+    # Get user data, return 404 if doesn't exist
+    query = db.select(User).filter_by(username=username)
+    try:
+        user = db.session.execute(query).scalar_one() 
+    except NoResultFound:
+        return f'User {username} not found.', 404
+    
+    # Delete if the passwords match
+    if bcrypt.checkpw(password, user.password.encode('utf-8')):
+        db.session.delete(user)
+        db.session.commit()
+        return user.username
+    else:
+        return 'Incorrect password.', 401
 
 def login(username):
     pass
