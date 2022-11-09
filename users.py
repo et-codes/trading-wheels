@@ -2,6 +2,7 @@ import bcrypt
 from flask import request
 from database import db
 from models import User
+from sqlalchemy.orm.exc import NoResultFound
 
 
 def create_user():
@@ -21,7 +22,16 @@ def create_user():
         return f'Error creating user: {err=}', 500
 
 def get_user(username):
-    pass
+    query = db.select(User).filter_by(username=username)
+    try:
+        user = db.session.execute(query).scalar_one()
+        return user.username
+    except NoResultFound:
+        return f'User {username} not found.', 404
+
+def delete_user():
+    (username, password) = request.json.values()
+
 
 def login(username):
     pass
