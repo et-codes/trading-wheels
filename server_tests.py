@@ -45,6 +45,21 @@ class UserTests(unittest.TestCase):
         response = requests.get(url)
         self.assertEqual(response.status_code, 404)
 
+    def test_login(self):
+        url = f'{SERVER_URL}/login'
+        response = requests.post(url, json=self._test_user)
+        self.assertEqual(response.status_code, 200)
+        self.assertGreater(len(response.text), 50)
+
+    def test_logout(self):
+        url = f'{SERVER_URL}/login'
+        response = requests.post(url, json=self._test_user)
+
+        url = f'{SERVER_URL}/logout/{TEST_USERNAME}'
+        response = requests.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.text, TEST_USERNAME)
+
 
 if __name__ == '__main__':
     unittest.main()
