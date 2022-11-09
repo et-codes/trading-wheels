@@ -40,8 +40,8 @@ app.add_url_rule('/user/login', view_func=users.login, methods=['POST'])
 app.add_url_rule('/user/logout/<username>', view_func=users.logout)
 
 ## Trading endpoints
-app.add_url_rule('/trades/<user_id>', view_func=trades.get_portfolio)
-app.add_url_rule('/trades', view_func=trades.trade, methods=['POST'])
+app.add_url_rule('/trade/<username>', view_func=trades.get_portfolio)
+app.add_url_rule('/trade', view_func=trades.trade, methods=['POST'])
 
 ## Home page
 @app.route('/')
