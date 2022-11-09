@@ -12,7 +12,7 @@ class User(db.Model):
         server_default=func.now())
     last_login = db.Column(db.TIMESTAMP(timezone=True))
     last_logout = db.Column(db.TIMESTAMP(timezone=True))
-    trades = db.relationship('Trade', backref='user')
+    trades = db.relationship('Trade', backref='user', cascade='delete')
 
     def __repr__(self):
         return f"User(username='{self.username}', password=<...>)"
@@ -37,7 +37,7 @@ class Trade(db.Model):
     shares = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     date = db.Column(db.TIMESTAMP(timezone=True),
-        server_default=func.now(), nullable=False)
+        server_default=func.now())
     
     def __repr__(self):
         return f"Trade(user_id={self.user_id}, " + \

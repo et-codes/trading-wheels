@@ -16,6 +16,13 @@ class UserTests(unittest.TestCase):
             'username': TEST_USERNAME,
             'password': TEST_PASSWORD
         }
+
+        # Create test user if it is not in the database already
+        url = f'{SERVER_URL}/user/{TEST_USERNAME}'
+        response = requests.get(url)
+        if response.text != TEST_USERNAME:
+            url = f'{SERVER_URL}/user'
+            requests.post(url, json=self._test_user)
     
     def tearDown(self):
         pass

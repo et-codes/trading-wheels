@@ -22,7 +22,10 @@ with app.app_context():
     if len(sys.argv) > 1 and sys.argv[1].lower() == 'rebuild':
         print('Rebuilding database tables...')
         db.drop_all()
-    db.create_all()
+        db.create_all()
+        sys.exit(0)
+    else:
+        db.create_all()
 
 
 # Home page
