@@ -34,7 +34,7 @@ class Trade(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'),
         nullable=False)
     symbol = db.Column(db.String(5), nullable=False)
-    shares = db.Column(db.Integer, nullable=False)
+    shares = db.Column(db.Float, nullable=False)
     price = db.Column(db.Float, nullable=False)
     date = db.Column(db.TIMESTAMP(timezone=True),
         server_default=func.now())
