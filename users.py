@@ -61,11 +61,6 @@ def delete_user():
     
     # Delete if the passwords match
     if bcrypt.checkpw(password, user.password.encode('utf-8')):
-        # Delete trades first
-        query = db.select(Trade).filter_by(user_id=user.id)
-        trades = db.session.execute(query).scalars().all()
-        print(trades)
-        # Then delete user
         db.session.delete(user)
         db.session.commit()
         return user.username
@@ -74,7 +69,6 @@ def delete_user():
 
 def login():
     (username, password) = request.json.values()
-
     password = password.encode('utf-8')
     user = get_user(username)
 
