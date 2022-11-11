@@ -41,25 +41,38 @@ class TradeTests(unittest.TestCase):
         response = requests.get(url)
         trade = json.loads(response.text)
 
+        self.assertEqual(response.status_code, 200)
         self.assertIsInstance(trade, dict)
         self.assertGreaterEqual(trade['shares'], 1)
 
     def test_get_trades_by_username(self):
         url = f'{SERVER_URL}/trade/user/{TEST_USERNAME}'
         response = requests.get(url)
-        portfolio = json.loads(response.text)
+        trades = json.loads(response.text)
 
-        self.assertIsInstance(portfolio, list)
-        self.assertGreaterEqual(len(portfolio), 1)
-        self.assertGreaterEqual(portfolio[0]['shares'], 1)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(trades, list)
+        self.assertGreaterEqual(len(trades), 1)
+        self.assertGreaterEqual(trades[0]['shares'], 1)
 
-    @unittest.skip('Not written yet.')
-    def test_trade_buy(self):
-        pass
+    def test_trade(self):
+        url = f'{SERVER_URL}/trade'
+        trade_obj = {
+            'username': TEST_USERNAME,
+            'symbol': 'ZVZZT',
+            'shares': 100,
+            'price': 12.34
+        }
+        response = requests.post(
+            url,
+            json=trade_obj,
+            headers={'Authorization': f'Bearer {self.token}'}
+        )
+        trades = json.loads(response.text)
 
-    @unittest.skip('Not written yet.')
-    def test_trade_sell(self):
-        pass
+        self.assertEqual(response.status_code, 201)
+        self.assertIsInstance(trades, list)
+        self.assertEqual(len(trades), 2)
 
 
 if __name__ == '__main__':
