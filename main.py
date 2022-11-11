@@ -35,12 +35,14 @@ with app.app_context():
 ## User endpoints
 app.add_url_rule('/user', view_func=users.create_user, methods=['POST'])
 app.add_url_rule('/user', view_func=users.delete_user, methods=['DELETE'])
-app.add_url_rule('/user/<username>', view_func=users.check_user)
+app.add_url_rule('/user/<string:username>', view_func=users.check_user)
 app.add_url_rule('/user/login', view_func=users.login, methods=['POST'])
-app.add_url_rule('/user/logout/<username>', view_func=users.logout)
+app.add_url_rule('/user/logout/<string:username>', view_func=users.logout)
 
 ## Trading endpoints
-app.add_url_rule('/trade/<username>', view_func=trades.get_portfolio)
+app.add_url_rule('/trade/user/<string:username>', 
+    view_func=trades.get_trades_by_user)
+app.add_url_rule('/trade/id/<int:id>', view_func=trades.get_trade_by_id)
 app.add_url_rule('/trade', view_func=trades.trade, methods=['POST'])
 
 ## Home page
