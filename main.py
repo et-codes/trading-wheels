@@ -43,6 +43,8 @@ app.add_url_rule('/user/logout/<string:username>', view_func=users.logout)
 app.add_url_rule('/trade/user/<string:username>', 
     view_func=trades.get_trades_by_user)
 app.add_url_rule('/trade/id/<int:id>', view_func=trades.get_trade_by_id)
+app.add_url_rule('/trade/id/<int:id>', 
+    view_func=trades.delete_trade, methods=['DELETE'])
 app.add_url_rule('/trade', view_func=trades.trade, methods=['POST'])
 
 ## Home page

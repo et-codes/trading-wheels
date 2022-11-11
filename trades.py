@@ -1,5 +1,5 @@
 import tokens
-from flask import request, Request
+from flask import request, Request, Response
 from database import db
 from models import User, Trade
 
@@ -67,3 +67,12 @@ def create_cash_transaction(trade: Trade) -> Trade:
         price = 1
     )
     return cash_trade
+
+def delete_trade(id: int) -> Response:
+    trade = db.session.query(Trade).get(id)
+    if trade is not None:
+        db.session.delete(trade)
+        db.session.commit()
+        return Response(status=200)
+    else:
+        return f'Trade id {id} not found.', 404
