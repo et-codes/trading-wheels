@@ -37,7 +37,9 @@ class TradeTests(unittest.TestCase):
         requests.get(url)
 
     def test_get_trade_by_id(self):
-        url = f'{SERVER_URL}/trade/id/1'
+        trades = self.get_trades_by_username(TEST_USERNAME)
+
+        url = f'{SERVER_URL}/trade/id/{trades[0]["id"]}'
         response = requests.get(url)
         trade = json.loads(response.text)
 
@@ -46,14 +48,16 @@ class TradeTests(unittest.TestCase):
         self.assertGreaterEqual(trade['shares'], 1)
 
     def test_get_trades_by_username(self):
-        url = f'{SERVER_URL}/trade/user/{TEST_USERNAME}'
-        response = requests.get(url)
-        trades = json.loads(response.text)
+        trades = self.get_trades_by_username(TEST_USERNAME)
 
-        self.assertEqual(response.status_code, 200)
         self.assertIsInstance(trades, list)
         self.assertGreaterEqual(len(trades), 1)
         self.assertGreaterEqual(trades[0]['shares'], 1)
+    
+    def get_trades_by_username(self, username):
+        url = f'{SERVER_URL}/trade/user/{username}'
+        response = requests.get(url)
+        return json.loads(response.text)
 
     def test_trade(self):
         url = f'{SERVER_URL}/trade'
@@ -73,6 +77,13 @@ class TradeTests(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertIsInstance(trades, list)
         self.assertEqual(len(trades), 2)
+
+        self.delete_trades(trades)
+
+    def delete_trades(self, trades):
+        for trade in trades:
+            url = f"{SERVER_URL}/trade/id/{trade['id']}"
+            requests.delete(url)
 
 
 if __name__ == '__main__':
