@@ -1,8 +1,8 @@
 import os
+import portfolio
 import sys
 import trades
 import users
-import views
 from database import db
 from dotenv import load_dotenv
 from flask import Flask
@@ -47,6 +47,10 @@ app.add_url_rule('/trade/id/<int:id>',
 app.add_url_rule('/trade/id/<int:id>', 
     view_func=trades.delete_trade, methods=['DELETE'])
 app.add_url_rule('/trade', view_func=trades.trade, methods=['POST'])
+
+## Portfolio
+app.add_url_rule('/trade/portfolio/<string:username>', 
+    view_func=portfolio.get_portfolio)
 
 ## Home page
 @app.route('/')

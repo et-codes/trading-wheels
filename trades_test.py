@@ -84,6 +84,10 @@ class TradeTests(unittest.TestCase):
         for trade in trades:
             url = f"{SERVER_URL}/trade/id/{trade['id']}"
             requests.delete(url)
+    
+    @unittest.skip('Not written yet.')
+    def test_get_portfolio(self):
+        pass
 
 
 if __name__ == '__main__':

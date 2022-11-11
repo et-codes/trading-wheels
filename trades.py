@@ -18,9 +18,6 @@ def get_trades_by_user(username: str) -> list[dict]:
 
     return [t.json() for t in trades]
 
-def get_portfolio(username: str) -> list[dict]:
-    pass
-
 def get_user_id(username: str) -> int:
     query = db.select(User).filter_by(username=username)
     user = db.session.execute(query).scalar_one()
