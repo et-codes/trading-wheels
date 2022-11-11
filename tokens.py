@@ -26,14 +26,14 @@ def create(username):
 
 
 # Validate token
-def validate(token):
+def is_valid(token):
     try:
-        payload = jwt.decode(
+        jwt.decode(
             token,
             key=SECRET_KEY,
             algorithms='HS256'
         )
-        return payload
+        return True
     except:
         return False
 
