@@ -1,20 +1,15 @@
-import os
 import portfolio
 import sys
 import trades
 import users
+from config import Config
 from database import db
-from dotenv import load_dotenv
 from flask import Flask
 from models import User, Trade
 
 
-# Initialize application
-load_dotenv()
-SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
-
 app = Flask(__name__, static_folder='./build', static_url_path='/')
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+app.config.from_object(Config)
 db.init_app(app)
 
 
