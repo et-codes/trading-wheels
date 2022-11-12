@@ -38,11 +38,10 @@ class Trade(db.Model):
     __tablename__ = 'trades'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-        nullable=False)
-    symbol = db.Column(db.String(5), nullable=False)
-    shares = db.Column(db.Float, nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    symbol = db.Column(db.String(16))
+    shares = db.Column(db.Float)
+    price = db.Column(db.Float)
     date = db.Column(db.TIMESTAMP(timezone=True),
         server_default=func.now())
     
