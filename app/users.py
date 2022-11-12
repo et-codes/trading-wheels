@@ -64,6 +64,9 @@ def login():
 
 @app.route('/user/logout/<string:username>')
 def logout(username):
+    if not tokens.is_valid(request):
+        return 'Invalid or expired token.', 401
+
     user = get_user(username)
     user.last_logout = func.now()
     db.session.commit()

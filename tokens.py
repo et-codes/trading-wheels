@@ -2,6 +2,7 @@ import jwt
 import os
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
+from flask import Request
 
 
 load_dotenv()
@@ -9,7 +10,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 TOKEN_EXPIRATION_IN_HOURS = 24
 
 
-# Create new token
 def create(username):
     expiration_date = datetime.today() + \
         timedelta(hours=TOKEN_EXPIRATION_IN_HOURS)
@@ -25,8 +25,7 @@ def create(username):
     return token
 
 
-# Validate token
-def is_valid(token):
+def is_verified(token):
     try:
         jwt.decode(
             token,
@@ -38,7 +37,6 @@ def is_valid(token):
         return False
 
 
-# Check if token is expired
 def is_expired(token):
     try:
         payload = jwt.decode(
@@ -57,9 +55,13 @@ def is_expired(token):
         return True
 
 
-if __name__ == '__main__':
-    username = 'eric'
-    token = create(username)
-    print('Token:', token)
-    print('Token data:', validate(token))
-    print('Token expired:', is_expired(token))
+def get_token(request: Request) -> str:
+    auth_header = request.headers.get('Authorization')
+    token = auth_header.split(' ')[1]
+    return token
+
+
+def is_valid(request: Request) -> bool:
+    token = get_token(request)
+    return is_verified(token) and not is_expired(token)
+

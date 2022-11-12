@@ -19,28 +19,25 @@ class TradeTests(unittest.TestCase):
             'password': TEST_PASSWORD
         }
 
-        # Create test user if it is not in the database already
+        # Create test user if it doesn't already exist
         url = f'{SERVER_URL}/user/{TEST_USERNAME}'
         response = requests.get(url)
         if response.text != TEST_USERNAME:
             url = f'{SERVER_URL}/user'
             requests.post(url, json=self._test_user)
         
-        # Log in test user
-        url = f'{SERVER_URL}/user/login'
-        request = requests.post(url, json=self._test_user)
-        self.token = request.text
+        self.header = self.get_auth_header()
 
     def tearDown(self):
         # Logout test user
         url = f'{SERVER_URL}/user/logout/{TEST_USERNAME}'
-        requests.get(url)
+        requests.get(url, headers=self.header)
 
     def test_get_trade_by_id(self):
         trades = self.get_trades_by_username(TEST_USERNAME)
 
         url = f'{SERVER_URL}/trade/id/{trades[0]["id"]}'
-        response = requests.get(url)
+        response = requests.get(url, headers=self.header)
         trade = json.loads(response.text)
 
         self.assertEqual(response.status_code, 200)
@@ -56,7 +53,7 @@ class TradeTests(unittest.TestCase):
     
     def get_trades_by_username(self, username):
         url = f'{SERVER_URL}/trade/user/{username}'
-        response = requests.get(url)
+        response = requests.get(url, headers=self.header)
         return json.loads(response.text)
 
     def test_trade(self):
@@ -67,11 +64,7 @@ class TradeTests(unittest.TestCase):
             'shares': 100,
             'price': 12.34
         }
-        response = requests.post(
-            url,
-            json=trade_obj,
-            headers={'Authorization': f'Bearer {self.token}'}
-        )
+        response = requests.post(url, json=trade_obj, headers=self.header)
         trades = json.loads(response.text)
 
         self.assertEqual(response.status_code, 201)
@@ -83,11 +76,14 @@ class TradeTests(unittest.TestCase):
     def delete_trades(self, trades):
         for trade in trades:
             url = f"{SERVER_URL}/trade/id/{trade['id']}"
-            requests.delete(url)
+            requests.delete(url, headers=self.header)
     
-    @unittest.skip('Not written yet.')
-    def test_get_portfolio(self):
-        pass
+    def get_auth_header(self):
+        url = f'{SERVER_URL}/user/login'
+        response = requests.post(url, json=self._test_user)
+        token = response.text
+        header = {'Authorization': f'Bearer {token}'}
+        return header
 
 
 if __name__ == '__main__':

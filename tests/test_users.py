@@ -59,13 +59,19 @@ class UserTests(unittest.TestCase):
         self.assertGreater(len(response.text), 50)
 
     def test_logout(self):
-        url = f'{SERVER_URL}/user/login'
-        response = requests.post(url, json=self._test_user)
+        header = self.login_and_get_auth_header()
 
         url = f'{SERVER_URL}/user/logout/{TEST_USERNAME}'
-        response = requests.get(url)
+        response = requests.get(url, headers=header)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.text, TEST_USERNAME)
+
+    def login_and_get_auth_header(self):
+        url = f'{SERVER_URL}/user/login'
+        response = requests.post(url, json=self._test_user)
+        token = response.text
+        header = {'Authorization': f'Bearer {token}'}
+        return header
 
 
 if __name__ == '__main__':
