@@ -6,7 +6,7 @@ from app.models import User, Trade
 
 @app.route('/trade/id/<int:id>')
 def get_trade_by_id(id: int) -> dict:
-    trade = db.session.query(Trade).get(id)
+    trade = Trade.query.get(id)
     if trade is not None:
         return trade.json()
     else:
@@ -14,16 +14,12 @@ def get_trade_by_id(id: int) -> dict:
 
 @app.route('/trade/user/<string:username>')
 def get_trades_by_user(username: str) -> list[dict]:
-    user_id = get_user_id(username) 
-    query = db.select(Trade).filter_by(user_id=user_id)
-    trades = db.session.execute(query).scalars().all()
-
+    user = get_user(username) 
+    trades = Trade.query.filter_by(user=user).first()
     return [t.json() for t in trades]
 
-def get_user_id(username: str) -> int:
-    query = db.select(User).filter_by(username=username)
-    user = db.session.execute(query).scalar_one()
-    return user.id
+def get_user(username):
+    return User.query.filter_by(username=username).first()
 
 @app.route('/trade', methods=['POST'])
 def trade() -> list[dict]:
@@ -50,9 +46,9 @@ def get_token(request: Request) -> str:
 
 def create_trade(request: Request) -> Trade:
     trade_obj = request.json
-    user_id = get_user_id(trade_obj['username'])
+    user = get_user(trade_obj['username'])
     new_trade = Trade(
-        user_id = user_id,
+        user = user,
         symbol = trade_obj['symbol'],
         shares = trade_obj['shares'],
         price = trade_obj['price']
@@ -70,7 +66,7 @@ def create_cash_transaction(trade: Trade) -> Trade:
 
 @app.route('/trade/id/<int:id>', methods=['DELETE'])
 def delete_trade(id: int) -> Response:
-    trade = db.session.query(Trade).get(id)
+    trade = Trade.query.get(id)
     if trade is not None:
         db.session.delete(trade)
         db.session.commit()
