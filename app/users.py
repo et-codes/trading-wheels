@@ -1,12 +1,13 @@
 import bcrypt
 import tokens
 from flask import request
-from database import db
-from models import User, Trade
+from app import app, db
+from app.models import User, Trade
 from sqlalchemy.sql import func
 from sqlalchemy.orm.exc import NoResultFound
 
 
+@app.route('/user', methods=['POST'])
 def create_user():
     (username, password) = request.json.values()   
     hashed = create_pw_hash(password)
@@ -43,6 +44,7 @@ def get_user(username):
     except NoResultFound:
         return None
 
+@app.route('/user/<string:username>')
 def check_user(username):
     user = get_user(username)
     if user is None:
@@ -50,6 +52,7 @@ def check_user(username):
     else:
         return user.username
 
+@app.route('/user', methods=['DELETE'])
 def delete_user():
     (username, password) = request.json.values()
     password = password.encode('utf-8')
@@ -67,6 +70,7 @@ def delete_user():
     else:
         return 'Incorrect password.', 401
 
+@app.route('/user/login', methods=['POST'])
 def login():
     (username, password) = request.json.values()
     password = password.encode('utf-8')
@@ -85,6 +89,7 @@ def login():
     else:
         return 'Incorrect password.', 401
 
+@app.route('/user/logout/<string:username>')
 def logout(username):
     user = get_user(username)
     user.last_logout = func.now()

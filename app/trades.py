@@ -1,9 +1,10 @@
 import tokens
 from flask import request, Request, Response
-from database import db
-from models import User, Trade
+from app import app, db
+from app.models import User, Trade
 
 
+@app.route('/trade/id/<int:id>')
 def get_trade_by_id(id: int) -> dict:
     trade = db.session.query(Trade).get(id)
     if trade is not None:
@@ -11,6 +12,7 @@ def get_trade_by_id(id: int) -> dict:
     else:
         return f'Trade id {id} not found.', 404
 
+@app.route('/trade/user/<string:username>')
 def get_trades_by_user(username: str) -> list[dict]:
     user_id = get_user_id(username) 
     query = db.select(Trade).filter_by(user_id=user_id)
@@ -23,6 +25,7 @@ def get_user_id(username: str) -> int:
     user = db.session.execute(query).scalar_one()
     return user.id
 
+@app.route('/trade', methods=['POST'])
 def trade() -> list[dict]:
     if not token_is_valid(request):
         return 'Invalid or expired token.', 401
@@ -65,6 +68,7 @@ def create_cash_transaction(trade: Trade) -> Trade:
     )
     return cash_trade
 
+@app.route('/trade/id/<int:id>', methods=['DELETE'])
 def delete_trade(id: int) -> Response:
     trade = db.session.query(Trade).get(id)
     if trade is not None:

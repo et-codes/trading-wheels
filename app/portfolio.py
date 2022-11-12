@@ -1,6 +1,6 @@
 from flask import request, Request, Response
-from database import db
-from models import User, Trade
+from app import app, db
+from app.models import User, Trade
 
 
 # portfolio = [
@@ -9,6 +9,6 @@ from models import User, Trade
 #   {stocks, cash, gain}
 # ]
 
-
+@app.route('/trade/portfolio/<string:username>')
 def get_portfolio(username: str) -> list[dict]:
     pass
