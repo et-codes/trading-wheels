@@ -1,4 +1,3 @@
-import bcrypt
 import tokens
 from flask import request
 from app import app, db
@@ -9,40 +8,20 @@ from sqlalchemy.orm.exc import NoResultFound
 
 @app.route('/user', methods=['POST'])
 def create_user():
-    (username, password) = request.json.values()   
-    hashed = create_pw_hash(password)
-    new_user = User(username=username, password=hashed)
+    (username, password) = request.json.values()
 
-    try:
-        db.session.add(new_user)
-        db.session.commit()
-        db.session.refresh(new_user)
-        starting_balance = Trade(
-            user_id=new_user.id, 
-            symbol='$CASH', 
-            shares=100000, 
-            price=1
-        )
-        db.session.add(starting_balance)
-        db.session.commit()
-        return new_user.json(), 201
-    except Exception as err:
-        print(err)
-        return f'Error creating user: {err=}', 500
+    new_user = User(username=username)
+    new_user.set_password(password)
+    db.session.add(new_user)
 
-def create_pw_hash(password):
-    salt = bcrypt.gensalt()
-    password = password.encode('utf-8')
-    hashed = bcrypt.hashpw(password, salt).decode('utf-8')
-    return hashed
+    cash = Trade(user=new_user, symbol='$CASH', shares=100000, price=1)
+    db.session.add(cash)
+
+    db.session.commit()
+    return new_user.json(), 201
 
 def get_user(username):
-    query = db.select(User).filter_by(username=username)
-    try:
-        user = db.session.execute(query).scalar_one() 
-        return user
-    except NoResultFound:
-        return None
+    return User.query.filter_by(username=username).first()
 
 @app.route('/user/<string:username>')
 def check_user(username):
@@ -55,15 +34,12 @@ def check_user(username):
 @app.route('/user', methods=['DELETE'])
 def delete_user():
     (username, password) = request.json.values()
-    password = password.encode('utf-8')
 
-    # Get user data, return 404 if doesn't exist
     user = get_user(username)
     if user is None:
         return f'User {username} not found.', 404
     
-    # Delete if the passwords match
-    if bcrypt.checkpw(password, user.password.encode('utf-8')):
+    if user.check_password(password):
         db.session.delete(user)
         db.session.commit()
         return user.username
@@ -73,15 +49,12 @@ def delete_user():
 @app.route('/user/login', methods=['POST'])
 def login():
     (username, password) = request.json.values()
-    password = password.encode('utf-8')
     user = get_user(username)
 
-    if user is not None:
-        saved_password = user.password.encode('utf-8')
-    else:
+    if user is None:
         return 'Invalid username.', 401
     
-    if bcrypt.checkpw(password, saved_password):
+    if user.check_password(password):
         user.last_login = func.now()
         db.session.commit()
         token = tokens.create(username)
