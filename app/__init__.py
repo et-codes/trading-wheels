@@ -9,8 +9,6 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-@app.route('/')
-def home():
-    return app.send_static_file('index.html')
 
-from app import users, trades, portfolio
+
+from app import home, users, trades, portfolio
