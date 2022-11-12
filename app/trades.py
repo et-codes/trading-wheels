@@ -13,13 +13,14 @@ def get_trade_by_id(id: int) -> dict:
         return f'Trade id {id} not found.', 404
 
 @app.route('/trade/user/<string:username>')
-def get_trades_by_user(username: str) -> list[dict]:
-    user = get_user(username) 
-    trades = Trade.query.filter_by(user=user).first()
+def get_trades_by_username(username: str) -> list[dict]:
+    user = get_user(username)
+    trades = Trade.query.filter_by(user=user).all()
     return [t.json() for t in trades]
 
 def get_user(username):
-    return User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username).first()
+    return user
 
 @app.route('/trade', methods=['POST'])
 def trade() -> list[dict]:
