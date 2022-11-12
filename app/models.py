@@ -28,7 +28,6 @@ class User(db.Model):
         return {
             "id": self.id,
             "username": self.username,
-            "password_hash": self.password_hash,
             "last_login": self.last_login,
             "last_logout": self.last_logout
         }
