@@ -21,6 +21,8 @@ def get_portfolio(username: str) -> list[dict]:
         return f'Username {username} not found.', 404
     
     all_trades = user.trades
+    # symbols = Trade.query.with_entities(Trade.symbol).filter_by(user=user).distinct().all()
+    # need a way to get the current stock price
 
     return [trade.json() for trade in all_trades]
 
