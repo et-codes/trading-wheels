@@ -17,6 +17,9 @@ def get_portfolio(username: str) -> list[dict]:
         return 'Invalid or expired token.', 401
 
     user = User.query.filter_by(username=username).first()
+    if user is None:
+        return 'Invalid username.', 404
+    
     all_trades = user.trades
 
     return [trade.json() for trade in all_trades]
