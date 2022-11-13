@@ -21,6 +21,9 @@ def get_trades_by_username(username: str) -> list[dict]:
         return 'Invalid or expired token.', 401
 
     user = get_user(username)
+    if user is None:
+        return 'Invalid username.', 404
+    
     trades = user.trades
     return [t.json() for t in trades]
 
