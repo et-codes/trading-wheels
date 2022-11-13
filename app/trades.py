@@ -2,6 +2,7 @@ import tokens
 from flask import request, Request, Response
 from app import app, db
 from app.models import User, Trade
+from app.users import get_user
 
 
 @app.route('/trade/id/<int:id>')
@@ -22,14 +23,10 @@ def get_trades_by_username(username: str) -> list[dict]:
 
     user = get_user(username)
     if user is None:
-        return 'Invalid username.', 404
+        return f'Username {username} not found.', 404
     
     trades = user.trades
     return [t.json() for t in trades]
-
-def get_user(username):
-    user = User.query.filter_by(username=username).first()
-    return user
 
 @app.route('/trade', methods=['POST'])
 def trade() -> list[dict]:

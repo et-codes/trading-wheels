@@ -2,7 +2,7 @@ import tokens
 from flask import request, Request, Response, jsonify
 from app import app, db
 from app.models import User, Trade
-from app.trades import get_trades_by_username
+from app.users import get_user
 
 
 # portfolio = [
@@ -16,9 +16,9 @@ def get_portfolio(username: str) -> list[dict]:
     if not tokens.is_valid(request):
         return 'Invalid or expired token.', 401
 
-    user = User.query.filter_by(username=username).first()
+    user = get_user(username)
     if user is None:
-        return 'Invalid username.', 404
+        return f'Username {username} not found.', 404
     
     all_trades = user.trades
 
