@@ -33,8 +33,11 @@ def trade() -> list[dict]:
     if not tokens.is_valid(request):
         return 'Invalid or expired token.', 401
 
-    new_trade = create_trade(request)
-    cash_trade = create_cash_transaction(new_trade)
+    trade_obj = request.json
+    user = get_user(trade_obj['username'])
+
+    new_trade = create_trade(trade_obj, user)
+    cash_trade = create_cash_transaction(new_trade, user)
 
     db.session.add(new_trade)
     db.session.add(cash_trade)
@@ -42,9 +45,7 @@ def trade() -> list[dict]:
 
     return [new_trade.json(), cash_trade.json()], 201
 
-def create_trade(request: Request) -> Trade:
-    trade_obj = request.json
-    user = get_user(trade_obj['username'])
+def create_trade(trade_obj: dict, user: User) -> Trade:
     new_trade = Trade(
         user = user,
         symbol = trade_obj['symbol'],
@@ -53,9 +54,9 @@ def create_trade(request: Request) -> Trade:
     )
     return new_trade
 
-def create_cash_transaction(trade: Trade) -> Trade:
+def create_cash_transaction(trade: Trade, user: User) -> Trade:
     cash_trade = Trade(
-        user_id = trade.user_id,
+        user = user,
         symbol = '$CASH',
         shares = -(trade.shares * trade.price),
         price = 1
