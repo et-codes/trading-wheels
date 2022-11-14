@@ -21,6 +21,11 @@ def get_api_url(symbol):
 
 def get_stock_data(symbol):
     if symbol == '$CASH':
-        return {'companyName': 'Cash', 'latestPrice': 1.0, 'primaryExchange': '-'}
+        return {
+            'symbol': '$CASH',
+            'companyName': 'Cash',
+            'latestPrice': 1.0,
+            'primaryExchange': '-'
+        }
     response = requests.get(get_api_url(symbol))
     return response.json()
