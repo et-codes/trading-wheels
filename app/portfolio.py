@@ -8,7 +8,7 @@ from app.models import Trade, User
 
 class Position:
 
-    def __init__(self, stock):
+    def __init__(self, stock: dict) -> None:
         self.symbol = stock['symbol']
         self.description = stock['companyName']
         self.current_share_price = stock['latestPrice']
@@ -17,13 +17,13 @@ class Position:
         self.total_cost = 0
         self.gain = 0
     
-    def add(self, trade):
+    def add(self, trade: Trade) -> None:
         self.total_shares += trade.shares
         self.total_cost += trade.shares * trade.price
         self.current_value = self.total_shares * self.current_share_price
         self.gain = (self.current_value / self.total_cost - 1) * 100
 
-    def json(self):
+    def json(self) -> dict:
         return {
             'symbol': self.symbol, 
             'description': self.description, 
@@ -51,7 +51,7 @@ def get_portfolio(user: User) -> list[dict]:
     return {'summary': summary, 'positions': positions}
 
 
-def get_positions(user):
+def get_positions(user: User) -> list[dict]:
     """Compute positions for each individual stock"""
     all_trades = user.trades
     stocks = get_stocks(user)
@@ -67,7 +67,7 @@ def get_positions(user):
     return positions
 
 
-def get_stocks(user):
+def get_stocks(user: User) -> dict:
     """Get stock data for each distinct stock in user's trade history"""
     symbols = Trade.query.with_entities(Trade.symbol) \
         .filter_by(user=user).distinct().all()
@@ -79,7 +79,7 @@ def get_stocks(user):
     return stock_prices
 
 
-def get_portfolio_summary(positions):
+def get_portfolio_summary(positions: list[dict]) -> dict:
     """Calculate total stock and cash positions and total gain/loss"""
     total_stock_value = 0
     total_stock_cost = 0
