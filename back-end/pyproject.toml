@@ -1,11 +1,10 @@
 [tool.poetry]
-name = "trading-wheels-server"
+name = "trading-wheels"
 version = "0.1.0"
 description = ""
 authors = ["et-codes <104942211+et-codes@users.noreply.github.com>"]
 license = "LICENSE"
 readme = "README.md"
-packages = [{include = "trading_wheels_server"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
