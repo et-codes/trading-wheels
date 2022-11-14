@@ -1,6 +1,6 @@
 import tokens
 from flask import request
-from app import app, db
+from app import app, db, STARTING_CASH
 from app.models import User, Trade
 from sqlalchemy.sql import func
 from sqlalchemy.orm.exc import NoResultFound
@@ -14,7 +14,7 @@ def create_user():
     new_user.set_password(password)
     db.session.add(new_user)
 
-    cash = Trade(user=new_user, symbol='$CASH', shares=100000, price=1)
+    cash = Trade(user=new_user, symbol='$CASH', shares=STARTING_CASH, price=1)
     db.session.add(cash)
 
     db.session.commit()

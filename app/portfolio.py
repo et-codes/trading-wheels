@@ -1,6 +1,6 @@
 import tokens
 from flask import request
-from app import app
+from app import app, STARTING_CASH
 from app.users import get_user
 from app.stocks import get_stock_data
 from app.models import Trade, User
@@ -92,7 +92,7 @@ def get_portfolio_summary(positions):
             total_stock_cost += position['cost']
 
     total_assets = total_stock_value + total_cash
-    gain = (total_assets / 100000 - 1) * 100
+    gain = (total_assets / STARTING_CASH - 1) * 100
 
     return {
         'stocks': total_stock_value,
