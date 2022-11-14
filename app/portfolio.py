@@ -1,5 +1,5 @@
 import tokens
-from flask import request
+from flask import request, Response
 from app import app, STARTING_CASH
 from app.users import get_user
 from app.stocks import get_stock_data
@@ -35,13 +35,13 @@ class Position:
 
 
 @app.route('/portfolio/<string:username>')
-def return_portfolio(username: str) -> list[dict]:
+def return_portfolio(username: str) -> Response:
     if not tokens.is_valid(request):
         return 'Invalid or expired token.', 401
     user = get_user(username)
     if user is None:
         return f'Username {username} not found.', 404
-    return get_portfolio(user)
+    return get_portfolio(user), 200
 
 
 def get_portfolio(user: User) -> list[dict]:
