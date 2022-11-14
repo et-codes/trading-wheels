@@ -1,5 +1,5 @@
 import tokens
-from flask import request, Request, Response
+from flask import request
 from app import app, db
 from app.models import User, Trade
 from app.users import get_user
@@ -64,7 +64,7 @@ def create_cash_transaction(trade: Trade, user: User) -> Trade:
     return cash_trade
 
 @app.route('/trade/id/<int:id>', methods=['DELETE'])
-def delete_trade(id: int) -> Response:
+def delete_trade(id: int) -> str:
     if not tokens.is_valid(request):
         return 'Invalid or expired token.', 401
 
@@ -72,6 +72,6 @@ def delete_trade(id: int) -> Response:
     if trade is not None:
         db.session.delete(trade)
         db.session.commit()
-        return Response(status=200)
+        return '', 200
     else:
         return f'Trade id {id} not found.', 404
