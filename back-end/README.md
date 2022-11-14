@@ -4,7 +4,9 @@ Trading Wheels is a stock trading simulator. This is the back end code.
 
 ## TODO list
 
-- authenticate with tokens for all API calls after login.
+- Add attribution to front end:
+    <a href="https://iexcloud.io">Data provided by IEX Cloud</a>
+    
 
 ## Notes
 
