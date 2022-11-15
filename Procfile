@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath back-end app:trading_wheels
+web: gunicorn --pythonpath back-end trading_wheels:app
