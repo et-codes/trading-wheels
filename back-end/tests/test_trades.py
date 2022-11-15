@@ -26,7 +26,7 @@ class TradeTests(unittest.TestCase):
             url = f'{SERVER_URL}/user'
             requests.post(url, json=self._test_user)
         
-        self.header = self.get_auth_header()
+        self.header = self.login_get_auth_header()
 
     def tearDown(self):
         # Logout test user
@@ -65,7 +65,7 @@ class TradeTests(unittest.TestCase):
             'price': 12.34
         }
         response = requests.post(url, json=trade_obj, headers=self.header)
-        trades = json.loads(response.text)
+        trades = json.loads(response.text)  # response.json() ?
 
         self.assertEqual(response.status_code, 201)
         self.assertIsInstance(trades, list)
@@ -78,7 +78,7 @@ class TradeTests(unittest.TestCase):
             url = f"{SERVER_URL}/trade/id/{trade['id']}"
             requests.delete(url, headers=self.header)
     
-    def get_auth_header(self):
+    def login_get_auth_header(self):
         url = f'{SERVER_URL}/user/login'
         response = requests.post(url, json=self._test_user)
         token = response.text
