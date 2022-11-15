@@ -13,7 +13,7 @@ Trading Wheels is a stock trading simulator, currently under development.
   {username, symbol, shares, price}
 - portfolio object to client:
   [
-  {symbol, description, shares, price, value, gain},
+  {symbol, description, shares, cost, value, gain_pct},
   ...,
-  {stocks, cash, gain}
+  {stocks, cash, total, gain_pct}
   ]
