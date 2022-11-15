@@ -22,16 +22,13 @@ class PortfolioTests(unittest.TestCase):
         self.create_trades()
 
     def tearDown(self) -> None:
-        print('Logging out test user...')
         url = f'{SERVER_URL}/user/logout/{self._test_user["username"]}'
         requests.get(url, headers=self.header)
 
-        print('Deleting test user...')
         url = f'{SERVER_URL}/user'
         requests.delete(url, json=self._test_user)
 
     def create_test_user(self) -> None:
-        print('\nCreating test user...')
         url = f'{SERVER_URL}/user/{self._test_user["username"]}'
         response = requests.get(url)
         if response.text != self._test_user["username"]:
@@ -39,7 +36,6 @@ class PortfolioTests(unittest.TestCase):
             requests.post(url, json=self._test_user)
 
     def login_get_auth_header(self) -> dict:
-        print('Logging in test user...')
         url = f'{SERVER_URL}/user/login'
         response = requests.post(url, json=self._test_user)
         token = response.text
@@ -47,7 +43,6 @@ class PortfolioTests(unittest.TestCase):
         return header
 
     def create_trades(self) -> None:
-        print('Creating trades...')
         url = f'{SERVER_URL}/trade'
         trade_obj = {
             'username': self._test_user["username"],
@@ -61,7 +56,6 @@ class PortfolioTests(unittest.TestCase):
         requests.post(url, json=trade_obj, headers=self.header)
 
     def test_receive_portfolio(self) -> None:
-        print('Getting portfolio...')
         url = f'{SERVER_URL}/portfolio/{self._test_user["username"]}'
         response = requests.get(url, headers=self.header)
 
