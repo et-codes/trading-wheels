@@ -1,57 +1,76 @@
-import json
 import os
 import requests
 import unittest
 from dotenv import load_dotenv
+from time import sleep
 
 
 load_dotenv()
 SERVER_URL = os.environ.get('SERVER_URL')
-TEST_USERNAME = os.environ.get('TEST_USERNAME')
-TEST_PASSWORD = os.environ.get('TEST_PASSWORD')
 
 
 class PortfolioTests(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self) -> None:
         self._test_user = {
-            'username': TEST_USERNAME,
-            'password': TEST_PASSWORD
+            'username': 'temporary_user_1854',
+            'password': '9as8hfgiodu'
         }
 
-        url = f'{SERVER_URL}/user/{TEST_USERNAME}'
-        response = requests.get(url)
-        if response.text != TEST_USERNAME:
-            url = f'{SERVER_URL}/user'
-            requests.post(url, json=self._test_user)
-        
-        self.header = self.get_auth_header()
+        self.create_test_user()        
+        self.header = self.login_get_auth_header()
+        self.create_trades()
 
-    def tearDown(self):
-        url = f'{SERVER_URL}/user/logout/{TEST_USERNAME}'
+    def tearDown(self) -> None:
+        print('Logging out test user...')
+        url = f'{SERVER_URL}/user/logout/{self._test_user["username"]}'
         requests.get(url, headers=self.header)
 
-    def get_auth_header(self):
+        print('Deleting test user...')
+        url = f'{SERVER_URL}/user'
+        requests.delete(url, json=self._test_user)
+
+    def create_test_user(self) -> None:
+        print('\nCreating test user...')
+        url = f'{SERVER_URL}/user/{self._test_user["username"]}'
+        response = requests.get(url)
+        if response.text != self._test_user["username"]:
+            url = f'{SERVER_URL}/user'
+            requests.post(url, json=self._test_user)
+
+    def login_get_auth_header(self) -> dict:
+        print('Logging in test user...')
         url = f'{SERVER_URL}/user/login'
         response = requests.post(url, json=self._test_user)
         token = response.text
         header = {'Authorization': f'Bearer {token}'}
         return header
 
-    def test_receive_portfolio(self):
-        temp_user = {'username': 'temporary_user_1854', 'password': '9as8hfgiodu'}
-        self.create_trades(temp_user)
-        url = f'{SERVER_URL}/portfolio/{temp_user["username"]}'
-        response = requests.post(url)
+    def create_trades(self) -> None:
+        print('Creating trades...')
+        url = f'{SERVER_URL}/trade'
+        trade_obj = {
+            'username': self._test_user["username"],
+            'symbol': 'IBM',
+            'shares': 100,
+            'price': 10
+        }
+        
+        requests.post(url, json=trade_obj, headers=self.header)
+        sleep(0.25)
+        requests.post(url, json=trade_obj, headers=self.header)
+
+    def test_receive_portfolio(self) -> None:
+        print('Getting portfolio...')
+        url = f'{SERVER_URL}/portfolio/{self._test_user["username"]}'
+        response = requests.get(url, headers=self.header)
 
         self.assertEqual(response.status_code, 200)
-    
-    def create_trades(self, temp_user):
-        header = self.create_user_and_login(temp_user)
 
-    def create_user_and_login(self, temp_user):
-        requests.post(f'{SERVER_URL}/user', json=temp_user)
-        response = requests.post(f'{SERVER_URL}/user/login', json=temp_user)
-        token = response.text
-        header = {'Authorization': f'Bearer {token}'}
-        return header
+        portfolio = response.json()
+        self.assertEqual(portfolio['summary']['cash'], 98000)
+        self.assertEqual(len(portfolio['positions']), 2)
+
+
+if __name__ == '__main__':
+    unittest.main()
