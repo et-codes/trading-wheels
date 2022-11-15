@@ -1,12 +1,11 @@
-# trading-wheels-server
+# Trading Wheels
 
-Trading Wheels is a stock trading simulator. This is the back end code.
+Trading Wheels is a stock trading simulator, currently under development.
 
 ## TODO list
 
 - Add attribution to front end:
-    <a href="https://iexcloud.io">Data provided by IEX Cloud</a>
-    
+  <a href="https://iexcloud.io">Data provided by IEX Cloud</a>
 
 ## Notes
 
