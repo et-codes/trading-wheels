@@ -1,0 +1,1 @@
+web: gunicorn --paythonpath back-end app:app
