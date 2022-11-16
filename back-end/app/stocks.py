@@ -6,7 +6,7 @@ from flask import request
 
 c = pyEX.Client(version='stable')
 
-@app.route('/stock/<string:symbol>')
+@app.route('/stock/quote/<string:symbol>')
 def return_stock_data(symbol):
     if not tokens.is_valid(request):
         return 'Invalid or expired token.', 401
