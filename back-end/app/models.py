@@ -58,3 +58,21 @@ class Trade(db.Model):
             "price": self.price,
             "date": self.date
         }
+
+
+class Stock(db.Model):
+    __tablename__ = 'stocks'
+
+    id = db.Column(db.Integer, primary_key=True)
+    symbol = db.Column(db.String(16))
+    description = db.Column(db.String(256))
+
+    def __repr__(self):
+        return f"Stock(symbol='{self.symbol}', description='{self.description}')"
+    
+    def json(self):
+        return {
+            "id": self.id,
+            "symbol": self.symbol,
+            "description": self.description
+        }
