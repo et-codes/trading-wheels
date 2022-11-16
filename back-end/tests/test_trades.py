@@ -1,4 +1,3 @@
-import json
 import os
 import requests
 import unittest
@@ -38,7 +37,7 @@ class TradeTests(unittest.TestCase):
 
         url = f'{SERVER_URL}/trade/id/{trades[0]["id"]}'
         response = requests.get(url, headers=self.header)
-        trade = json.loads(response.text)
+        trade = response.json()
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(trade, dict)
@@ -54,18 +53,18 @@ class TradeTests(unittest.TestCase):
     def get_trades_by_username(self, username):
         url = f'{SERVER_URL}/trade/user/{username}'
         response = requests.get(url, headers=self.header)
-        return json.loads(response.text)
+        return response.json()
 
     def test_trade(self):
         url = f'{SERVER_URL}/trade'
         trade_obj = {
             'username': TEST_USERNAME,
-            'symbol': 'ZVZZT',
+            'symbol': 'AAPL',
             'shares': 100,
             'price': 12.34
         }
         response = requests.post(url, json=trade_obj, headers=self.header)
-        trades = json.loads(response.text)  # response.json() ?
+        trades = response.json()
 
         self.assertEqual(response.status_code, 201)
         self.assertIsInstance(trades, list)
