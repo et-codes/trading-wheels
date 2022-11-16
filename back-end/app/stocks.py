@@ -22,3 +22,12 @@ def get_stock_data(symbol):
         }
     quote = c.quote(symbol, filter='symbol,companyName,latestPrice,primaryExchange')
     return quote
+
+@app.route('/stock/search/<string:fragment>')
+def return_stock_search_result(fragment):
+    if not tokens.is_valid(request):
+        return 'Invalid or expired token.', 401
+    return get_stock_search_result(fragment)
+
+def get_stock_search_result(fragment):
+    pass
