@@ -2,7 +2,6 @@ import os
 import requests
 import unittest
 from dotenv import load_dotenv
-from time import sleep
 
 
 load_dotenv()
@@ -52,7 +51,6 @@ class PortfolioTests(unittest.TestCase):
         }
         
         requests.post(url, json=trade_obj, headers=self.header)
-        sleep(0.25)
         requests.post(url, json=trade_obj, headers=self.header)
 
     def test_receive_portfolio(self) -> None:
