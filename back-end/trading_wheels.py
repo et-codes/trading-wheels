@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Trade, Stock
+from app.models import User, Trade, Stock, MetaData
 
 
 @app.shell_context_processor
@@ -8,5 +8,6 @@ def make_shell_context():
         'db': db,
         'User': User,
         'Trade': Trade,
-        'Stock': Stock
+        'Stock': Stock,
+        'MetaData': MetaData
     }
