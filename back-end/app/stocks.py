@@ -2,8 +2,9 @@ import pyEX
 import tokens
 from app import app, db
 from app.models import Stock, MetaData
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask import request
+from sqlalchemy.sql import func
 
 
 c = pyEX.Client(version='stable')
@@ -36,13 +37,13 @@ def return_stock_search_result(fragment):
 
 def get_stock_search_result(fragment):
     check_for_stale_symbol_list()
-    stocks = Stock.query.filter(Stock.description.like(f'%{fragment}%')).all()
+    stocks = Stock.query.filter(Stock.description.ilike(f'%{fragment}%')).all()
     return [stock.json() for stock in stocks]
 
 def check_for_stale_symbol_list():
     last_update = MetaData.query.filter(MetaData.key == "last_stock_update").first()
-    if last_update is None or \
-        last_update.date <= datetime.utcnow() - timedelta(hours=24):
+    now = datetime.now(timezone.utc)
+    if last_update is None or last_update.updated <= now - timedelta(hours=24):
         print('Refreshing stock symbol table...')
         refresh_symbols()
 
@@ -53,13 +54,15 @@ def refresh_symbols():
         stock = Stock(symbol=symbol['symbol'], description=symbol['name'])
         db.session.add(stock)
     db.session.commit()
-    
+    set_last_update()
+
+def set_last_update():
     last_update = MetaData.query.filter(MetaData.key == "last_stock_update").first()
     if last_update is None:
-        last_update = MetaData(key="last_stock_update", date=datetime.utcnow())
+        last_update = MetaData(key="last_stock_update", updated=func.now())
         db.session.add(last_update)
     else:
-        last_update.date = datetime.utcnow()
+        last_update.updated = func.now()
     db.session.commit()
 
 def delete_stale_symbols():

@@ -84,16 +84,16 @@ class MetaData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     key = db.Column(db.String(64))
     value = db.Column(db.String(256))
-    date = db.Column(db.TIMESTAMP(timezone=True))
+    updated = db.Column(db.TIMESTAMP(timezone=True))
 
     def __repr__(self):
-        return f"MetaData(key='{self.key}', value='{self.value}'," + \
-            " date='{self.date}')"
+        return f"MetaData(key='{self.key}', value='{self.value}', " + \
+            f"updated='{self.updated}')"
     
     def json(self):
         return {
             "id": self.id,
             "key": self.key,
             "value": self.value,
-            "date": self.date
+            "updated": self.updated
         }
