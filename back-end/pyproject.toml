@@ -18,6 +18,7 @@ flask-sqlalchemy = "^3.0.2"
 psycopg2 = "^2.9.5"
 flask-migrate = "^3.1.0"
 pyex = "^0.5.0"
+sqlalchemy-cockroachdb = "^1.4.4"
 
 
 [build-system]

@@ -621,6 +621,17 @@ pymysql = ["pymysql", "pymysql (<1)"]
 sqlcipher = ["sqlcipher3_binary"]
 
 [[package]]
+name = "sqlalchemy-cockroachdb"
+version = "1.4.4"
+description = "CockroachDB dialect for SQLAlchemy"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+SQLAlchemy = "*"
+
+[[package]]
 name = "sseclient"
 version = "0.0.27"
 description = "Python client library for reading Server Sent Event streams."
@@ -750,7 +761,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "04a9fbfabfde249f52b8e9f47bb1fcb037869eeccb1745648e52bf0bc059e7ea"
+content-hash = "62ae63bbb96115cd913a1280c3a66d7c57120d686c5bee4b0f006cc2019f5800"
 
 [metadata.files]
 alembic = [
@@ -1218,6 +1229,10 @@ sqlalchemy = [
     {file = "SQLAlchemy-1.4.44-cp39-cp39-win32.whl", hash = "sha256:7cf7c7adbf4417e3f46fc5a2dbf8395a5a69698217337086888f79700a12e93a"},
     {file = "SQLAlchemy-1.4.44-cp39-cp39-win_amd64.whl", hash = "sha256:d3b6d4588994da73567bb00af9d7224a16c8027865a8aab53ae9be83f9b7cbd1"},
     {file = "SQLAlchemy-1.4.44.tar.gz", hash = "sha256:2dda5f96719ae89b3ec0f1b79698d86eb9aecb1d54e990abb3fdd92c04b46a90"},
+]
+sqlalchemy-cockroachdb = [
+    {file = "sqlalchemy-cockroachdb-1.4.4.tar.gz", hash = "sha256:d31bfa5e5dc964177598431c3d6a85f670d87462bce3c02f06439bb73d8804a7"},
+    {file = "sqlalchemy_cockroachdb-1.4.4-py3-none-any.whl", hash = "sha256:84b23f452efba000e16c9157282ca6fb132dd04de9cda715902a4583a59461c7"},
 ]
 sseclient = [
     {file = "sseclient-0.0.27.tar.gz", hash = "sha256:b2fe534dcb33b1d3faad13d60c5a7c718e28f85987f2a034ecf5ec279918c11c"},
