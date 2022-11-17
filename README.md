@@ -6,7 +6,7 @@ Trading Wheels is a stock trading simulator, currently under development.
 
 - Add attribution to front end:
   <a href="https://iexcloud.io">Data provided by IEX Cloud</a>
-- Fetch list of stock symbols/companies every day and put into a table, to allow searching by company name
+- Make front end
 
 ## Notes
 
