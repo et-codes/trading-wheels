@@ -22,8 +22,11 @@ def get_stock_data(symbol):
             'latestPrice': 1.0,
             'primaryExchange': '-'
         }
-    quote = c.quote(symbol, filter='symbol,companyName,latestPrice,primaryExchange')
-    return quote
+    try:
+        quote = c.quote(symbol, filter='symbol,companyName,latestPrice,primaryExchange')
+        return quote
+    except pyEX.common.exception.PyEXception:
+        return f'Symbol "{symbol}" not found.', 404
 
 @app.route('/stock/search/<string:fragment>')
 def return_stock_search_result(fragment):
