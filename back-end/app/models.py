@@ -66,8 +66,6 @@ class Stock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     symbol = db.Column(db.String(16))
     description = db.Column(db.String(256))
-    # last_update = db.Column(db.TIMESTAMP(timezone=True),
-    #     server_default=func.now())
 
     def __repr__(self):
         return f"Stock(symbol='{self.symbol}', description='{self.description}')"
