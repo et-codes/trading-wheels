@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, Container, Form, Alert } from 'react-bootstrap';
 
 
-const Login = () => {
+const Login = ({ setToken, setUser }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -15,9 +15,7 @@ const Login = () => {
     'box to create a new account.';
 
   const handleUsername = (event) => setUsername(event.target.value);
-
   const handlePassword = (event) => setPassword(event.target.value);
-
   const handleRePassword = (event) => setRePassword(event.target.value);
 
   const handleSubmit = async (event) => {
@@ -65,7 +63,19 @@ const Login = () => {
   }
 
   const login = async () => {
-    //
+    try {
+      const user = { username: username, password: password };
+      const response = await axios.post('/user/login', user);
+      setToken(response.data);
+      setUser(username);
+      localStorage.setItem('token', response.data);
+      localStorage.setItem('username', username);
+      setAlert({ text: `User '${username}' logged in!`, variant: 'success' });
+      return true;
+    } catch (error) {
+      setAlert({ text: error.response.data, variant: 'danger' });
+      return false;
+    }
   }
 
   const clearForm = () => {
