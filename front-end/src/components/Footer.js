@@ -5,8 +5,20 @@ const Footer = () => {
     <Navbar className="mt-auto" bg="light" variant="light">
       <Container>
         &copy;2022 Eric Thornton
-        <a href="https://github.com/et-codes/trading-wheels">GitHub</a>
-        <a href="https://iexcloud.io">Data provided by IEX Cloud</a>
+        <a
+          href="https://github.com/et-codes/trading-wheels"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+        <a
+          href="https://iexcloud.io"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Data provided by IEX Cloud
+        </a>
       </Container>
     </Navbar>
   );

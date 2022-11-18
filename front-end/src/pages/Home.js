@@ -33,10 +33,10 @@ const Home = () => {
       <Image src={photo} fluid rounded className="shadow" />
       <p className="text-muted">
         Photo by{' '}
-        <a href={links.tyler}>
+        <a href={links.tyler} target="_blank" rel="noopener noreferrer">
           Tyler Prahm
         </a> on{' '}
-        <a href={links.unsplash}>
+        <a href={links.unsplash} target="_blank" rel="noopener noreferrer">
           Unsplash
         </a>
       </p>

@@ -8,7 +8,7 @@ const App = () => {
   return (
     <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
       <Header />
-      <Container>
+      <Container className="py-3">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/trading" element={<Trading />} />
