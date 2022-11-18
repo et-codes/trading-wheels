@@ -22,10 +22,46 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (newAccount) {
+      if (await createAccount()) clearForm();
+    } else {
+      if (await login()) clearForm();
+    }
   }
 
   const createAccount = async () => {
-    //
+    if (passwordsMatch()) {
+      try {
+        const newUser = { username: username, password: password };
+        const response = await axios.post('/user', newUser);
+        setAlert({
+          text: `New user '${response.data.username}' created!`,
+          variant: 'success'
+        });
+        return true;
+      } catch (error) {
+        if (error.response.status === 400) {
+          setAlert({
+            text: `Username "${username}" already exists.`,
+            variant: 'danger'
+          });
+        } else {
+          setAlert({ text: error.response.data, variant: 'danger' });
+        }
+        return false;
+      }
+    }
+  }
+
+  const passwordsMatch = () => {
+    if (password === rePassword) {
+      return true;
+    } else {
+      setAlert({ text: 'Passwords do not match.', variant: 'danger' });
+      setPassword('');
+      setRePassword('');
+      return false;
+    }
   }
 
   const login = async () => {
@@ -49,6 +85,7 @@ const Login = () => {
         className="mb-3"
         type="checkbox"
         label="Register new account"
+        checked={newAccount}
         onChange={() => setNewAccount(!newAccount)}
       />
       <Form onSubmit={handleSubmit} className="mb-3">
