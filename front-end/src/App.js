@@ -6,7 +6,7 @@ import { Container } from 'react-bootstrap';
 
 const App = () => {
   return (
-    <div>
+    <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
       <Header />
       <Container>
         <Routes>
