@@ -3,22 +3,27 @@ from flask import request
 from app import app, db, STARTING_CASH
 from app.models import User, Trade
 from sqlalchemy.sql import func
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import IntegrityError
 
 
 @app.route('/user', methods=['POST'])
 def create_user():
     (username, password) = request.json.values()
 
-    new_user = User(username=username)
-    new_user.set_password(password)
-    db.session.add(new_user)
-
-    cash = Trade(user=new_user, symbol='$CASH', shares=STARTING_CASH, price=1)
-    db.session.add(cash)
-
-    db.session.commit()
-    return new_user.json(), 201
+    try:
+        new_user = User(username=username)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+    except IntegrityError:
+        return f'Username {username} already exists.', 400
+    except Exception as err:
+        return f'Server error: {err=}.', 500
+    else:
+        cash = Trade(user=new_user, symbol='$CASH', shares=STARTING_CASH, price=1)
+        db.session.add(cash)
+        db.session.commit()
+        return new_user.json(), 201
 
 def get_user(username):
     return User.query.filter_by(username=username).first()

@@ -40,6 +40,11 @@ class UserTests(unittest.TestCase):
         response = requests.delete(url, json=temp_user)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.text, temp_user['username'])
+
+    def test_create_user_that_already_exists_returns_400(self):
+        url = f'{SERVER_URL}/user'
+        response = requests.post(url, json=self._test_user)
+        self.assertEqual(response.status_code, 400)
         
     def test_get_known_user(self):
         url = f'{SERVER_URL}/user/{TEST_USERNAME}'
