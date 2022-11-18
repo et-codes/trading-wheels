@@ -25,8 +25,10 @@ const Home = () => {
       <p>
         To get started, register a new account on our{' '}
         <BoldLink to="/login">Login</BoldLink> page.
-        You'll start with $100,000 virutal cash to start buying stocks.
-        Once you're logged in, you'll have acccess to the{' '}
+        You'll start with{' '}
+        <span className="text-success fw-bold">$100,000</span>{' '}
+        virutal cash to start buying stocks. Once you're logged in,
+        you'll have acccess to the{' '}
         <BoldLink to="/trade">Trade</BoldLink> and{' '}
         <BoldLink to="/portfolio">Portfolio</BoldLink> pages.
       </p>
