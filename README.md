@@ -4,9 +4,9 @@ Trading Wheels is a stock trading simulator, currently under development.
 
 ## TODO list
 
-- Add attribution to front end:
-  <a href="https://iexcloud.io">Data provided by IEX Cloud</a>
-- Make front end
+- Use cookies to store user info instead of localStorage.
+- Disable trading and portfolio pages if not logged in.
+- Add logged in user info and logout button to nav bar.
 
 ## Notes
 
