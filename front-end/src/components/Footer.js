@@ -2,8 +2,8 @@ import { Container } from "react-bootstrap";
 
 const Footer = () => {
   return (
-    <Container>
-      <a href="https://iexcloud.io">Data provided by IEX Cloud</a>
+    <Container className="text-muted">
+      Data provided by <a href="https://iexcloud.io">IEX Cloud</a>
     </Container>
   );
 }
