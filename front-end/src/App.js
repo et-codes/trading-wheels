@@ -10,7 +10,7 @@ const App = () => {
 
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [user, setUser] = useState(localStorage.getItem('username') || '');
-  const [alert, setAlert] = useState({ text: '', variant: 'primary' });
+  const [message, setMessage] = useState({ text: '', variant: '' });
 
 
   useEffect(() => {
@@ -18,10 +18,17 @@ const App = () => {
   }, [token]);
 
 
+  useEffect(() => {
+    if (message.text) {
+      setTimeout(() => setMessage({ text: '', variant: '' }), 3000);
+    }
+  }, [message]);
+
+
   return (
     <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
       <Header user={user} />
-      <InfoBar alert={alert} />
+      {message.text && <InfoBar message={message} />}
       <Container className="py-3">
         <Routes>
           <Route path="/" exact element={<Home />} />
@@ -32,7 +39,7 @@ const App = () => {
             <Login setToken={setToken} setUser={setUser} />
           } />
           <Route path="/logout" element={
-            <Logout user={user} setUser={setUser} setAlert={setAlert} />
+            <Logout user={user} setUser={setUser} setMessage={setMessage} />
           } />
           <Route path="*" element={
             <NotFound />

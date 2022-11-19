@@ -2,22 +2,22 @@ import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 
 
-const Logout = ({ user, setUser, setAlert }) => {
+const Logout = ({ user, setUser, setMessage }) => {
 
   const logout = async () => {
     try {
       const response = await axios.get(`user/logout/${user}`);
-      setAlert({ text: `Logged out ${response.data}.`, variant: 'secondary' });
+      setMessage({ text: `Logged out ${response.data}.`, variant: 'secondary' });
       setUser('');
       localStorage.removeItem('username');
       localStorage.removeItem('token');
     } catch (error) {
-      setAlert({ text: error.response.data, variant: 'danger' });
+      setMessage({ text: 'Error logging out.', variant: 'danger' });
       console.log(error.response.data);
     }
   }
 
-  logout();
+  if (user) logout();
 
   return (
     <Navigate to="/" />

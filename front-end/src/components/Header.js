@@ -14,21 +14,19 @@ const Header = ({ user }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse>
           <Nav className="me-auto">
-            <Nav.Item>
-              <Nav.Link as={NavLink} to="/">Home</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={NavLink} to="/trading">Trading</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={NavLink} to="/portfolio">Portfolio</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={NavLink} to="/about">About</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              {accountLink}
-            </Nav.Item>
+            <Nav.Link as={NavLink} to="/">
+              Home
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/trading" disabled={!user}>
+              Trading
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/portfolio" disabled={!user}>
+              Portfolio
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/about">
+              About
+            </Nav.Link>
+            {accountLink}
           </Nav>
         </Navbar.Collapse>
       </Container>

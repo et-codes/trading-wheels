@@ -1,13 +1,11 @@
 import { Alert, Container } from 'react-bootstrap';
 
-const InfoBar = ({ alert }) => {
-  if (alert.text) {
-    return (
-      <Alert variant={alert.variant || 'primary'}>
-        <Container>{alert.text}</Container>
-      </Alert>
-    );
-  }
+const InfoBar = ({ message }) => {
+  return (
+    <Alert variant={message.variant || 'primary'}>
+      <Container>{message.text}</Container>
+    </Alert>
+  );
 }
 
 export default InfoBar;
