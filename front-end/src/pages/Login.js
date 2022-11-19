@@ -3,24 +3,24 @@ import { useState } from 'react';
 import { Button, Container, Form, Alert } from 'react-bootstrap';
 
 
-const Login = ({ setToken, setUser }) => {
+const Login = ({ setToken, setUsername }) => {
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [rePassword, setRePassword] = useState('');
-  const [newAccount, setNewAccount] = useState(false);
+  const [usernameField, setUsernameField] = useState('');
+  const [passwordField, setPasswordField] = useState('');
+  const [rePasswordField, setRePasswordField] = useState('');
+  const [newAccountCheck, setNewAccountCheck] = useState(false);
   const [alert, setAlert] = useState({});
 
   const loginMessage = 'Please log in below.  Check the "Register new account" ' +
     'box to create a new account.';
 
-  const handleUsername = (event) => setUsername(event.target.value);
-  const handlePassword = (event) => setPassword(event.target.value);
-  const handleRePassword = (event) => setRePassword(event.target.value);
+  const handleUsername = (event) => setUsernameField(event.target.value);
+  const handlePassword = (event) => setPasswordField(event.target.value);
+  const handleRePassword = (event) => setRePasswordField(event.target.value);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (newAccount) {
+    if (newAccountCheck) {
       if (await createAccount()) clearForm();
     } else {
       if (await login()) clearForm();
@@ -30,7 +30,7 @@ const Login = ({ setToken, setUser }) => {
   const createAccount = async () => {
     if (passwordsMatch()) {
       try {
-        const newUser = { username: username, password: password };
+        const newUser = { username: usernameField, password: passwordField };
         const response = await axios.post('/user', newUser);
         setAlert({
           text: `New user '${response.data.username}' created!`,
@@ -40,7 +40,7 @@ const Login = ({ setToken, setUser }) => {
       } catch (error) {
         if (error.response.status === 400) {
           setAlert({
-            text: `Username "${username}" already exists.`,
+            text: `Username "${usernameField}" already exists.`,
             variant: 'danger'
           });
         } else {
@@ -52,37 +52,38 @@ const Login = ({ setToken, setUser }) => {
   }
 
   const passwordsMatch = () => {
-    if (password === rePassword) {
+    if (passwordField === rePasswordField) {
       return true;
     } else {
       setAlert({ text: 'Passwords do not match.', variant: 'danger' });
-      setPassword('');
-      setRePassword('');
+      setPasswordField('');
+      setRePasswordField('');
       return false;
     }
   }
 
   const login = async () => {
     try {
-      const user = { username: username, password: password };
+      const user = { username: usernameField, password: passwordField };
       const response = await axios.post('/user/login', user);
       setToken(response.data);
-      setUser(username);
+      setUsername(usernameField);
       localStorage.setItem('token', response.data);
-      localStorage.setItem('username', username);
-      setAlert({ text: `User '${username}' logged in!`, variant: 'success' });
+      localStorage.setItem('username', usernameField);
+      setAlert({ text: `User '${usernameField}' logged in!`, variant: 'success' });
       return true;
     } catch (error) {
+      console.error(error);
       setAlert({ text: error.response.data, variant: 'danger' });
       return false;
     }
   }
 
   const clearForm = () => {
-    setUsername('');
-    setPassword('');
-    setRePassword('');
-    setNewAccount(false);
+    setUsernameField('');
+    setPasswordField('');
+    setRePasswordField('');
+    setNewAccountCheck(false);
   }
 
 
@@ -95,30 +96,30 @@ const Login = ({ setToken, setUser }) => {
         className="mb-3"
         type="checkbox"
         label="Register new account"
-        checked={newAccount}
-        onChange={() => setNewAccount(!newAccount)}
+        checked={newAccountCheck}
+        onChange={() => setNewAccountCheck(!newAccountCheck)}
       />
       <Form onSubmit={handleSubmit} className="mb-3">
         <Form.Control className="mb-2"
           type="text"
           placeholder="Username"
-          value={username}
+          value={usernameField}
           onChange={handleUsername}
         />
         <Form.Control className="mb-2"
           type="password"
           placeholder="Password"
-          value={password}
+          value={passwordField}
           onChange={handlePassword}
         />
-        {newAccount && <Form.Control className="mb-2 "
+        {newAccountCheck && <Form.Control className="mb-2 "
           type="password"
           placeholder="Re-enter password"
-          value={rePassword}
+          value={rePasswordField}
           onChange={handleRePassword}
         />}
         <Button variant="primary" type="submit">
-          {newAccount ? 'Register' : 'Login'}
+          {newAccountCheck ? 'Register' : 'Login'}
         </Button>
       </Form>
     </Container>

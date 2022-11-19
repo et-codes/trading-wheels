@@ -2,7 +2,7 @@ import { Container, Nav, Navbar, NavbarBrand } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
 
-const Header = ({ user: username }) => {
+const Header = ({ username }) => {
   const accountLink = username
     ? <Nav.Link as={NavLink} to="/logout" >Logout [ {username} ]</Nav.Link>
     : <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
