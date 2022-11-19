@@ -1,8 +1,11 @@
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
+import { ErrorHandler } from '../utils';
 
 
 const Logout = ({ username, setUsername, setMessage }) => {
+
+  const errorHandler = new ErrorHandler(setMessage);
 
   const logout = async () => {
     try {
@@ -12,8 +15,7 @@ const Logout = ({ username, setUsername, setMessage }) => {
       setUsername('');
       setMessage({ text: `Logged out ${response.data}.`, variant: 'secondary' });
     } catch (error) {
-      setMessage({ text: 'Error logging out.', variant: 'danger' });
-      console.log(error.response.data);
+      errorHandler.log(error);
     }
   }
 
