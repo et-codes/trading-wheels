@@ -19,7 +19,7 @@ const App = () => {
 
   return (
     <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
-      <Header />
+      <Header user={user} />
       <Container className="py-3">
         <Routes>
           <Route path="/" element={<Home />} />

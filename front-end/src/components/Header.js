@@ -2,7 +2,12 @@ import { Container, Nav, Navbar, NavbarBrand } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
 
-const Header = () => {
+const Header = ({ user }) => {
+  const accountLink = user
+    ? <Nav.Link as={NavLink} to="/logout">Logout [ {user} ]</Nav.Link>
+    : <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+    ;
+
   return (
     <Navbar bg="primary" variant="dark" expand="md">
       <Container>
@@ -14,7 +19,7 @@ const Header = () => {
             <Nav.Link as={NavLink} to="/trading">Trading</Nav.Link>
             <Nav.Link as={NavLink} to="/portfolio">Portfolio</Nav.Link>
             <Nav.Link as={NavLink} to="/about">About</Nav.Link>
-            <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+            {accountLink}
           </Nav>
         </Navbar.Collapse>
       </Container>
