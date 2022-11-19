@@ -2,14 +2,14 @@ import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 
 
-const Logout = ({ user, setUser, setMessage }) => {
+const Logout = ({ username, setUsername, setMessage }) => {
 
   const logout = async () => {
     try {
-      const response = await axios.get(`user/logout/${user}`);
+      const response = await axios.get(`user/logout/${username}`);
       localStorage.removeItem('username');
       localStorage.removeItem('token');
-      setUser('');
+      setUsername('');
       setMessage({ text: `Logged out ${response.data}.`, variant: 'secondary' });
     } catch (error) {
       setMessage({ text: 'Error logging out.', variant: 'danger' });
@@ -17,7 +17,7 @@ const Logout = ({ user, setUser, setMessage }) => {
     }
   }
 
-  if (user) logout();
+  if (username) logout();
 
   return (
     <Navigate to="/" />

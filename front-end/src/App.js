@@ -9,7 +9,7 @@ import { Header, Footer, InfoBar } from './components';
 const App = () => {
 
   const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const [user, setUser] = useState(localStorage.getItem('username') || '');
+  const [username, setUsername] = useState(localStorage.getItem('username') || '');
   const [message, setMessage] = useState({ text: '', variant: '' });
 
 
@@ -27,19 +27,22 @@ const App = () => {
 
   return (
     <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
-      <Header user={user} />
+      <Header username={username} />
       {message.text && <InfoBar message={message} />}
       <Container className="py-3">
         <Routes>
           <Route path="/" exact element={<Home />} />
-          <Route path="/trading" element={<Trading />} />
-          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/trading" element={<Trading username={username} />} />
+          <Route path="/portfolio" element={<Portfolio username={username} />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={
-            <Login setToken={setToken} setUser={setUser} />
+            <Login setToken={setToken} setUsername={setUsername} />
           } />
           <Route path="/logout" element={
-            <Logout user={user} setUser={setUser} setMessage={setMessage} />
+            <Logout
+              username={username}
+              setUsername={setUsername}
+              setMessage={setMessage} />
           } />
           <Route path="*" element={
             <NotFound />

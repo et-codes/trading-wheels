@@ -2,9 +2,9 @@ import { Container, Nav, Navbar, NavbarBrand } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
 
-const Header = ({ user }) => {
-  const accountLink = user
-    ? <Nav.Link as={NavLink} to="/logout" >Logout [ {user} ]</Nav.Link>
+const Header = ({ user: username }) => {
+  const accountLink = username
+    ? <Nav.Link as={NavLink} to="/logout" >Logout [ {username} ]</Nav.Link>
     : <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
 
   return (
@@ -17,10 +17,10 @@ const Header = ({ user }) => {
             <Nav.Link as={NavLink} to="/">
               Home
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/trading" disabled={!user}>
+            <Nav.Link as={NavLink} to="/trading" disabled={!username}>
               Trading
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/portfolio" disabled={!user}>
+            <Nav.Link as={NavLink} to="/portfolio" disabled={!username}>
               Portfolio
             </Nav.Link>
             <Nav.Link as={NavLink} to="/about">

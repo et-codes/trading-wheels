@@ -1,6 +1,6 @@
 
 
-const Trading = () => {
+const Trading = ({ username }) => {
   return (
     <div>Trading Page</div>
   )
