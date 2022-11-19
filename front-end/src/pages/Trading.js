@@ -1,9 +1,15 @@
 import { Navigate } from 'react-router-dom';
 
 
-const Trading = ({ username }) => {
+const Trading = ({ username, setMessage }) => {
 
-  if (!username) return <Navigate to="/" />;
+  if (!username) {
+    setMessage({
+      text: 'You must login to use the Trading page.',
+      variant: 'warning'
+    });
+    return <Navigate to="/login" />;
+  }
 
   return (
     <div>Trading Page</div>

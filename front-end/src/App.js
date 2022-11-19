@@ -20,7 +20,7 @@ const App = () => {
 
   useEffect(() => {
     if (message.text) {
-      setTimeout(() => setMessage({ text: '', variant: '' }), 3000);
+      setTimeout(() => setMessage({ text: '', variant: '' }), 5000);
     }
   }, [message]);
 
