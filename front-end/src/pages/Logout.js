@@ -5,7 +5,6 @@ import { Navigate } from 'react-router-dom';
 const Logout = ({ user, setUser, setAlert }) => {
 
   const logout = async () => {
-    console.log('logout called.');
     try {
       const response = await axios.get(`user/logout/${user}`);
       setAlert({ text: `Logged out ${response.data}.`, variant: 'secondary' });

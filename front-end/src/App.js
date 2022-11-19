@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import { About, Home, Login, Logout, NotFound, Portfolio, Trading } from './pages';
-import { Header, Footer } from './components';
+import { Header, Footer, InfoBar } from './components';
 
 
 const App = () => {
@@ -21,6 +21,7 @@ const App = () => {
   return (
     <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
       <Header user={user} />
+      <InfoBar alert={alert} />
       <Container className="py-3">
         <Routes>
           <Route path="/" exact element={<Home />} />
