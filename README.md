@@ -6,8 +6,8 @@ Trading Wheels is a stock trading simulator, currently under development.
 
 - Redirect to ... portfolio? ... after logging in.
 - Disable trading and portfolio pages if not logged in.
-- Add logged in user info and logout button to nav bar.
 - Use cookies to store user info instead of localStorage.
+- Error messaging in template, add error handling where needed.
 
 ## Notes
 
