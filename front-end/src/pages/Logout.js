@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { ErrorHandler } from '../utils';
 
@@ -6,6 +7,10 @@ import { ErrorHandler } from '../utils';
 const Logout = ({ username, setUsername, setMessage }) => {
 
   const errorHandler = new ErrorHandler(setMessage);
+
+  useEffect(() => {
+    if (username) logout();
+  }, [username]);
 
   const logout = async () => {
     try {
@@ -18,8 +23,6 @@ const Logout = ({ username, setUsername, setMessage }) => {
       errorHandler.log(error);
     }
   }
-
-  if (username) logout();
 
   return (
     <Navigate to="/" />
