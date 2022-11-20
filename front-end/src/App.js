@@ -31,38 +31,24 @@ const App = () => {
       {message.text && <InfoBar message={message} />}
       <Container className="py-3">
         <Routes>
-
-          <Route path="/" exact element={
-            <Home />
-          } />
-
+          <Route path="/" exact element={<Home />} />
           <Route path="/trading" element={
             <Trading username={username} setMessage={setMessage} />
           } />
-
           <Route path="/portfolio" element={
             <Portfolio username={username} setMessage={setMessage} />
           } />
-
-          <Route path="/about" element={
-            <About />
-          } />
-
+          <Route path="/about" element={<About />} />
           <Route path="/login" element={
             <Login setToken={setToken} setUsername={setUsername} />
           } />
-
           <Route path="/logout" element={
             <Logout
               username={username}
               setUsername={setUsername}
               setMessage={setMessage} />
           } />
-
-          <Route path="*" element={
-            <NotFound />
-          } />
-
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Container>
       <Footer />

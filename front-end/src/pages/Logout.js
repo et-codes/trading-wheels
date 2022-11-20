@@ -10,7 +10,7 @@ const Logout = ({ username, setUsername, setMessage }) => {
 
   useEffect(() => {
     if (username) logout();
-  }, [username]);
+  }, []);
 
   const logout = async () => {
     try {

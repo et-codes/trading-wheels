@@ -7,6 +7,7 @@ Trading Wheels is a stock trading simulator, currently under development.
 - Redirect to ... portfolio? ... after logging in.
 - Use cookies to store user info instead of localStorage.
 - Check for error handling where needed.
+- Write tests for the front end.
 
 ## Notes
 
