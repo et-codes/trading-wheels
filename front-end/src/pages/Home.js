@@ -31,7 +31,7 @@ const Home = () => {
             <span className="text-success fw-bold">$100,000</span>{' '}
             virutal cash to start buying stocks. Once you're logged in,
             you'll have acccess to the{' '}
-            <BoldLink to="/trade">Trade</BoldLink> and{' '}
+            <BoldLink to="/trading">Trade</BoldLink> and{' '}
             <BoldLink to="/portfolio">Portfolio</BoldLink> pages.
           </p>
         </div>
