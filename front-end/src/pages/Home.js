@@ -1,7 +1,7 @@
 import { Button, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BoldLink } from '../components';
-import photo from '../assets/tyler-prahm-lmV3gJSAgbo-unsplash.jpg';
+import photo from './images/stock.jpg';
 
 
 const Home = () => {
