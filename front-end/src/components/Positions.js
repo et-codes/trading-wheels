@@ -14,6 +14,7 @@ const Positions = ({ positions }) => {
           <th>Cost</th>
           <th>Value</th>
           <th>Gain/Loss</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -27,6 +28,7 @@ const Positions = ({ positions }) => {
               <td>{currency(position.cost)}</td>
               <td>{currency(position.value)}</td>
               <td className={gainColor}>{percent(position.gain_pct)}</td>
+              <td>...</td>
             </tr>
           );
         })}
