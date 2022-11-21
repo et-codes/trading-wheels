@@ -40,7 +40,7 @@ const Portfolio = ({ username, setMessage }) => {
             <h2>Portfolio Summary</h2>
             <Summary summary={portfolio.summary} />
             <h2>Positions</h2>
-            <Positions />
+            <Positions positions={portfolio.positions} />
           </div>
         )
         : (
