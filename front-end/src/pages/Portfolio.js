@@ -37,7 +37,9 @@ const Portfolio = ({ username, setMessage }) => {
       {portfolio
         ? (
           <div>
+            <h2>Portfolio Summary</h2>
             <Summary summary={portfolio.summary} />
+            <h2>Positions</h2>
             <Positions />
           </div>
         )
