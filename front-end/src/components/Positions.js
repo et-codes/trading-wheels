@@ -35,7 +35,10 @@ const Positions = ({ positions }) => {
               <td className={"text-right " + gainColor}>
                 {percent(position.gain_pct)}
               </td>
-              <td className="text-center"><TradeButton id={position.symbol} onClick={handleClick} /></td>
+              <td className="text-center">
+                {position.symbol !== '$CASH' &&
+                  <TradeButton id={position.symbol} onClick={handleClick} />}
+              </td>
             </tr>
           );
         })}
