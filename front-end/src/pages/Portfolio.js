@@ -2,14 +2,16 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { ErrorHandler } from '../utils';
+import { Summary, Positions } from '../components';
+import BarLoader from 'react-spinners/BarLoader';
 
 
 const Portfolio = ({ username, setMessage }) => {
+  const [portfolio, setPortfolio] = useState(null);
 
-  const [positions, setPositions] = useState([]);
-  const [summary, setSummary] = useState({});
-
-  useEffect(() => get_portfolio, [username]);
+  useEffect(() => {
+    get_portfolio();
+  }, []);
 
   const errorHandler = new ErrorHandler(setMessage);
 
@@ -24,18 +26,28 @@ const Portfolio = ({ username, setMessage }) => {
   const get_portfolio = async () => {
     try {
       const response = await axios.get(`/portfolio/${username}`);
-      setPositions(response.data.positions);
-      setSummary(response.data.summary);
+      setPortfolio(response.data);
     } catch (error) {
       errorHandler.log(error);
     }
   }
 
   return (
-    <div>
-      Portfolio Page
-    </div>
-
+    <>
+      {portfolio
+        ? (
+          <div>
+            <Summary summary={portfolio.summary} />
+            <Positions />
+          </div>
+        )
+        : (
+          <div className="d-flex align-items-center justify-content-center">
+            <BarLoader color={'#325D88'} />
+          </div>
+        )
+      }
+    </>
   );
 }
 
