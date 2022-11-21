@@ -96,29 +96,36 @@ const Login = ({ setToken, setUsername }) => {
         className="mb-3"
         type="checkbox"
         label="Register new account"
+        data-testid="register-checkbox"
         checked={newAccountCheck}
         onChange={() => setNewAccountCheck(!newAccountCheck)}
       />
       <Form onSubmit={handleSubmit} className="mb-3">
-        <Form.Control className="mb-2"
+        <Form.Control
+          className="mb-2"
           type="text"
           placeholder="Username"
+          data-testid="username-input"
           value={usernameField}
           onChange={handleUsername}
         />
-        <Form.Control className="mb-2"
+        <Form.Control
+          className="mb-2"
           type="password"
           placeholder="Password"
+          data-testid="password-input"
           value={passwordField}
           onChange={handlePassword}
         />
-        {newAccountCheck && <Form.Control className="mb-2 "
+        {newAccountCheck && <Form.Control
+          className="mb-2"
           type="password"
           placeholder="Re-enter password"
+          data-testid="password-input-2"
           value={rePasswordField}
           onChange={handleRePassword}
         />}
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" data-testid="login-button">
           {newAccountCheck ? 'Register' : 'Login'}
         </Button>
       </Form>
