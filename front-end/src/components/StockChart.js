@@ -24,12 +24,12 @@ const StockChart = ({ symbol }) => {
   const chartOptions = {
     title: `${symbol} 3-month Closing Price Chart`,
     series: {
-      0: { type: "bars", axis: "Volume", targetAxisIndex: 0 },
-      1: { type: "line", axis: "Price", targetAxisIndex: 1 }
+      0: { type: "bars", axis: "Volume", targetAxisIndex: 1, color: "#325D88" },
+      1: { type: "line", axis: "Price", targetAxisIndex: 0, color: "#d9534f" }
     },
     vAxes: {
-      0: { logScale: false, title: "Volume (millions)" },
-      1: { logScale: false, title: "Price", minValue: 0 }
+      0: { logScale: false, title: "Price", minValue: 0 },
+      1: { logScale: false, title: "Volume (millions)" },
     },
     legend: { position: "none" },
   };
