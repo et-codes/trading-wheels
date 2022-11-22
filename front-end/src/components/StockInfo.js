@@ -36,7 +36,7 @@ const StockInfo = ({ symbol }) => {
     <>
       <Button
         key={symbol}
-        variant="link"
+        variant="info"
         size="sm"
         onClick={handleShow}
         className="py-0"

@@ -10,7 +10,7 @@ const Positions = ({ positions }) => {
   }
 
   return (
-    <Table bordered striped hover responsive="sm" size="sm">
+    <Table bordered hover responsive="sm" size="sm">
       <thead>
         <tr className="table-primary">
           <th className="text-center">Symbol</th>
