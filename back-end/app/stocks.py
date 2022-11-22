@@ -7,7 +7,14 @@ from flask import request
 from sqlalchemy.sql import func
 
 
-c = pyEX.Client(version='stable')
+c = pyEX.Client(version='stable');
+
+CASH = {
+    'symbol': '$CASH',
+    'companyName': 'Cash',
+    'latestPrice': 1.0,
+    'primaryExchange': '-'
+}
 
 @app.route('/stock/quote/<string:symbol>')
 def return_stock_data(symbol):
@@ -17,17 +24,23 @@ def return_stock_data(symbol):
 
 def get_stock_data(symbol):
     if symbol == '$CASH':
-        return {
-            'symbol': '$CASH',
-            'companyName': 'Cash',
-            'latestPrice': 1.0,
-            'primaryExchange': '-'
-        }
+        return CASH
     try:
         quote = c.quote(symbol, filter='symbol,companyName,latestPrice,primaryExchange')
         return quote
     except pyEX.common.exception.PyEXception:
         return f'Symbol "{symbol}" not found.', 404
+
+@app.route('/stock/chart/<string:symbol>', defaults={'range': '3m'})
+@app.route('/stock/chart/<string:symbol>/<string:range>')
+def return_stock_chart(symbol, range):
+    if not tokens.is_valid(request):
+        return 'Invalid or expired token.', 401
+    return get_stock_chart(symbol, range)
+
+def get_stock_chart(symbol, range):
+    chart = c.chart(symbol, timeframe=range)
+    return chart
 
 @app.route('/stock/search/<string:fragment>')
 def return_stock_search_result(fragment):
