@@ -4,11 +4,12 @@ Trading Wheels is a stock trading simulator, currently under development.
 
 ## TODO list
 
+- Convert project to TypeScript.
 - Redirect to ... portfolio? ... after logging in.
 - Use cookies to store user info instead of localStorage.
 - Check for error handling where needed.
 - Write tests for the front end.
-- Link symbols in Positions list to pop-up modal that displays stock quote.
+- Change "log in to get started!" button on home page to something else if the user is already logged in.
 
 ## Notes
 
