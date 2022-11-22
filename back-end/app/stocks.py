@@ -39,6 +39,10 @@ def return_stock_chart(symbol, range):
     return get_stock_chart(symbol, range)
 
 def get_stock_chart(symbol, range):
+    allowable_ranges = ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm',
+		'5d', '5dm', '1d']
+    if range not in allowable_ranges:
+        return f'Range must be in {allowable_ranges}.', 400
     chart = c.chart(symbol, timeframe=range)
     return chart
 
