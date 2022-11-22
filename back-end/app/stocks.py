@@ -43,8 +43,24 @@ def get_stock_chart(symbol, range):
 		'5d', '5dm', '1d']
     if range not in allowable_ranges:
         return f'Range must be in {allowable_ranges}.', 400
-    chart = c.chart(symbol, timeframe=range)
-    return chart
+    try:
+        chart = c.chart(symbol, timeframe=range)
+        return chart
+    except pyEX.common.exception.PyEXception:
+        return f'Symbol "{symbol}" not found.', 404
+
+@app.route('/stock/company/<string:symbol>')
+def return_company_data(symbol):
+    if not tokens.is_valid(request):
+        return 'Invalid or expired token.', 401
+    return get_company_data(symbol)
+
+def get_company_data(symbol):
+    try:
+        company_data = c.company(symbol)
+        return company_data
+    except pyEX.common.exception.PyEXception:
+        return f'Symbol "{symbol}" not found.', 404
 
 @app.route('/stock/search/<string:fragment>')
 def return_stock_search_result(fragment):
