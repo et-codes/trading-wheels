@@ -44,7 +44,7 @@ def get_stock_chart(symbol, range):
     if range not in allowable_ranges:
         return f'Range must be in {allowable_ranges}.', 400
     try:
-        chart = c.chart(symbol, timeframe=range)
+        chart = c.chart(symbol, timeframe=range, sort="asc")
         return chart
     except pyEX.common.exception.PyEXception:
         return f'Symbol "{symbol}" not found.', 404

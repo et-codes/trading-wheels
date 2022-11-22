@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
 import { currency } from '../utils/format';
+import { StockChart } from './';
 
 
 const StockInfo = ({ symbol }) => {
@@ -13,7 +14,7 @@ const StockInfo = ({ symbol }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const MAX_LENGTH = 1024;
+  const MAX_LENGTH = 512;
 
   useEffect(() => {
     if (symbol !== '$CASH') {
@@ -70,6 +71,8 @@ const StockInfo = ({ symbol }) => {
               </tr>
             </tbody>
           </Table>
+          <StockChart symbol={symbol} />
+          <hr />
           <p className="text-muted">
             {String(company.description).length > MAX_LENGTH
               ? company.description.slice(0, MAX_LENGTH) + '...'
