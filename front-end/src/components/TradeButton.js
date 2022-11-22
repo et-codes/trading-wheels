@@ -6,7 +6,7 @@ const TradeButton = ({ id, onClick }) => {
   return (
     <Button
       id={id}
-      variant="outline-primary"
+      variant="primary"
       size="sm"
       onClick={onClick}
       className="py-0"

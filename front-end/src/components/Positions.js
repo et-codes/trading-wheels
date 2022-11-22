@@ -1,6 +1,6 @@
 import { currency, percent, number } from '../utils/format';
 import { Table } from 'react-bootstrap';
-import { TradeButton } from './';
+import { StockInfo, TradeButton } from './';
 
 
 const Positions = ({ positions }) => {
@@ -13,7 +13,7 @@ const Positions = ({ positions }) => {
     <Table bordered striped hover responsive="sm" size="sm">
       <thead>
         <tr className="table-primary">
-          <th>Symbol</th>
+          <th className="text-center">Symbol</th>
           <th>Description</th>
           <th className="text-right">Shares</th>
           <th className="text-right">Cost</th>
@@ -27,7 +27,9 @@ const Positions = ({ positions }) => {
           const gainColor = position.gain_pct >= 0 ? 'text-success' : 'text-danger';
           return (
             <tr key={position.symbol}>
-              <td>{position.symbol}</td>
+              <td className="text-center">
+                <StockInfo symbol={position.symbol} />
+              </td>
               <td>{position.description}</td>
               <td className="text-right">{number(position.shares)}</td>
               <td className="text-right">{currency(position.cost)}</td>
