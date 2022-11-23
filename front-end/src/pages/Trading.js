@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
-import { ErrorHandler } from '../utils';
+// import { ErrorHandler } from '../utils';
 
 
 const Trading = ({ username, setMessage }) => {
 
-  const errorHandler = new ErrorHandler(setMessage);
+  // const errorHandler = new ErrorHandler(setMessage);
 
   if (!username) {
     setMessage({

@@ -9,11 +9,19 @@ import BarLoader from 'react-spinners/BarLoader';
 const Portfolio = ({ username, setMessage }) => {
   const [portfolio, setPortfolio] = useState(null);
 
-  useEffect(() => {
-    get_portfolio();
-  }, []);
 
-  const errorHandler = new ErrorHandler(setMessage);
+  useEffect(() => {
+    const errorHandler = new ErrorHandler(setMessage);
+    const get_portfolio = async () => {
+      try {
+        const response = await axios.get(`/portfolio/${username}`);
+        setPortfolio(response.data);
+      } catch (error) {
+        errorHandler.log(error);
+      }
+    };
+    get_portfolio();
+  }, [username, setMessage]);
 
   if (!username) {
     setMessage({
@@ -23,14 +31,6 @@ const Portfolio = ({ username, setMessage }) => {
     return <Navigate to="/login" />;
   }
 
-  const get_portfolio = async () => {
-    try {
-      const response = await axios.get(`/portfolio/${username}`);
-      setPortfolio(response.data);
-    } catch (error) {
-      errorHandler.log(error);
-    }
-  }
 
   return (
     <>

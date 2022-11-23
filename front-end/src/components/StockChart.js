@@ -8,18 +8,18 @@ const StockChart = ({ symbol }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
+    const getChartData = async () => {
+      const response = await axios.get(`/stock/chart/${symbol}`);
+      const data = response.data.map((point) => {
+        const date = new Date(point.date);
+        const dateString = `${date.getMonth() + 1}/${date.getDate()}`;
+        return [dateString, point.volume / 1000000, point.close];
+      });
+      setChartData([['Date', 'Volume', 'Closing Price'], ...data]);
+    };
     if (symbol !== '$CASH') getChartData();
-  }, []);
+  }, [symbol]);
 
-  const getChartData = async () => {
-    const response = await axios.get(`/stock/chart/${symbol}`);
-    const data = response.data.map((point) => {
-      const date = new Date(point.date);
-      const dateString = `${date.getMonth() + 1}/${date.getDate()}`;
-      return [dateString, point.volume / 1000000, point.close];
-    });
-    setChartData([['Date', 'Volume', 'Closing Price'], ...data]);
-  }
 
   const chartOptions = {
     title: `${symbol} 3-month Closing Price Chart`,
