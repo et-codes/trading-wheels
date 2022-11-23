@@ -4,7 +4,7 @@ Trading Wheels is a stock trading simulator, currently under development.
 
 ## TODO list
 
-- Convert project to TypeScript.
+- What happens when the token is expired?
 - Redirect to ... portfolio? ... after logging in.
 - Use cookies to store user info instead of localStorage.
 - Check for error handling where needed.
