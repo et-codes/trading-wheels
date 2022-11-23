@@ -1,4 +1,6 @@
 import os
+from datetime import timedelta
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
@@ -10,6 +12,7 @@ class Config(object):
 
     # Flask-sessionstore variables
     SESSION_TYPE = "sqlalchemy"
-    SESSION_PERMANENT = False
+    SESSION_PERMANENT = True
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
     SESSION_USE_SIGNER = True
     SESSION_SQLALCHEMY_TABLE = "sessions"

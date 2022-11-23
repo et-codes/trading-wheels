@@ -38,7 +38,7 @@ const Login = ({ setToken, setUsername }) => {
         });
         return true;
       } catch (error) {
-        if (error.response.status === 400) {
+        if (error.response.status === 409) {
           setAlert({
             text: `Username "${usernameField}" already exists.`,
             variant: 'danger'

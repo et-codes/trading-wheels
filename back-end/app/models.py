@@ -97,3 +97,13 @@ class MetaData(db.Model):
             "value": self.value,
             "updated": self.updated
         }
+
+
+class ServerSessions(db.Model):
+    __tablename__ = 'sessions'
+    __table_args__ = {'extend_existing': True}
+
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.String(255))
+    data = db.Column(db.Text)
+    expiry = db.Column(db.DateTime)
