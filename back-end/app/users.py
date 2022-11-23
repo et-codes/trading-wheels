@@ -1,5 +1,5 @@
 import tokens
-from flask import request
+from flask import request, session
 from app import app, db, STARTING_CASH
 from app.models import User, Trade
 from sqlalchemy.sql import func
@@ -8,13 +8,15 @@ from sqlalchemy.exc import IntegrityError
 
 @app.route('/user', methods=['POST'])
 def create_user():
-    (username, password) = request.json.values()
+    username = request.json['username']
+    password = request.json['password']
 
     try:
         new_user = User(username=username)
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
+        session['user_id'] = new_user.id
     except IntegrityError:
         return f'Username {username} already exists.', 400
     except Exception as err:

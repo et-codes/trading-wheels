@@ -19,6 +19,7 @@ psycopg2 = "^2.9.5"
 flask-migrate = "^3.1.0"
 pyex = "^0.5.0"
 sqlalchemy-cockroachdb = "^1.4.4"
+flask-sessionstore = "^0.4.5"
 
 
 [build-system]

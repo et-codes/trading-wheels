@@ -155,6 +155,17 @@ Flask = ">=0.9"
 Flask-SQLAlchemy = ">=1.0"
 
 [[package]]
+name = "flask-sessionstore"
+version = "0.4.5"
+description = "Adds session support to your Flask application"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Flask = ">=0.8"
+
+[[package]]
 name = "flask-sqlalchemy"
 version = "3.0.2"
 description = "Add SQLAlchemy support to your Flask application."
@@ -761,7 +772,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "62ae63bbb96115cd913a1280c3a66d7c57120d686c5bee4b0f006cc2019f5800"
+content-hash = "67c03b6a6f896edd5c1860b0381831d527fe07c03dbe05ddfc4f84a11bfb4e7d"
 
 [metadata.files]
 alembic = [
@@ -819,6 +830,10 @@ flask-cors = [
 flask-migrate = [
     {file = "Flask-Migrate-3.1.0.tar.gz", hash = "sha256:57d6060839e3a7f150eaab6fe4e726d9e3e7cffe2150fb223d73f92421c6d1d9"},
     {file = "Flask_Migrate-3.1.0-py3-none-any.whl", hash = "sha256:a6498706241aba6be7a251078de9cf166d74307bca41a4ca3e403c9d39e2f897"},
+]
+flask-sessionstore = [
+    {file = "Flask-Sessionstore-0.4.5.tar.gz", hash = "sha256:010de35ab9f0d9423c2f79c5131e00843c063f847c4ebee204cb034b98cb40f4"},
+    {file = "Flask_Sessionstore-0.4.5-py2.py3-none-any.whl", hash = "sha256:c4ff03d5abe3e5048cf3435c930eda090f54efe77cffa6201247cd63f6c7ee4b"},
 ]
 flask-sqlalchemy = [
     {file = "Flask-SQLAlchemy-3.0.2.tar.gz", hash = "sha256:16199f5b3ddfb69e0df2f52ae4c76aedbfec823462349dabb21a1b2e0a2b65e9"},
