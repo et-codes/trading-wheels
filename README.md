@@ -35,3 +35,7 @@ Trading Wheels is a stock trading simulator, currently under development.
   /stock/{symbol}/logo
 - get price only: /stock/{symbol}/price
 - search stock symbols: /search/{fragment}
+
+## Server-side sessions
+
+https://www.youtube.com/watch?v=sBw0O5YTT4Q&ab_channel=DevGuyAhnaf
