@@ -3,7 +3,7 @@ from app import app, db
 from app.models import Stock, MetaData, User
 from datetime import datetime, timedelta, timezone
 from flask import request, session
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, or_
 
 
 c = pyEX.Client(version='stable');
@@ -69,7 +69,10 @@ def return_stock_search_result(fragment):
 
 def get_stock_search_result(fragment):
     check_for_stale_symbol_list()
-    stocks = Stock.query.filter(Stock.description.ilike(f'%{fragment}%')).all()
+    stocks = Stock.query.filter(or_(
+        Stock.description.ilike(f'%{fragment}%'),
+        Stock.symbol.ilike(f'%{fragment}%')
+        )).all()
     return [stock.json() for stock in stocks]
 
 def check_for_stale_symbol_list():
