@@ -53,7 +53,7 @@ const Trading = ({ username, setMessage }) => {
         )}
       </div>
       <div>
-        {results && <SearchResultsTable results={results} />}
+        {results.length > 0 && <SearchResultsTable results={results} />}
       </div>
     </div>
   );
