@@ -9,6 +9,7 @@ const Trading = ({ username, setMessage }) => {
 
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState([]);
 
   if (!username) {
     setMessage({
@@ -24,8 +25,16 @@ const Trading = ({ username, setMessage }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setResults([]);
     setLoading(true);
-    setLoading(false);
+    try {
+      const response = await httpClient.get(`/stock/search/${search}`);
+      setResults(response.data);
+    } catch (error) {
+      setMessage({ text: error.message, variant: 'danger' });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -36,7 +45,7 @@ const Trading = ({ username, setMessage }) => {
       </em>
 
       <Form onSubmit={handleSubmit}>
-        <Row>
+        <Row className="mb-3">
           <Col>
             <Form.Control
               type="text"
@@ -58,6 +67,15 @@ const Trading = ({ username, setMessage }) => {
               <BarLoader color={'#325D88'} />
             </div>
           )}
+        </Row>
+        <Row>
+          {results.map((stock) => {
+            return (
+              <div key={stock.id}>
+                {stock.symbol} - {stock.description}
+              </div>
+            );
+          })}
         </Row>
       </Form>
 
