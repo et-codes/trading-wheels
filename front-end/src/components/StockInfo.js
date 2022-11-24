@@ -17,18 +17,19 @@ const StockInfo = ({ symbol }) => {
   const MAX_LENGTH = 512;
 
   useEffect(() => {
-    if (symbol !== '$CASH') {
+    if (show & symbol !== '$CASH') {
       getStockQuote(symbol);
       getCompanyInfo(symbol);
     }
-  }, [symbol]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [show, symbol]);
 
-  const getStockQuote = async (symbol) => {
+  const getStockQuote = async () => {
     const response = await httpClient.get(`/stock/quote/${symbol}`);
     setQuote(response.data);
   }
 
-  const getCompanyInfo = async (symbol) => {
+  const getCompanyInfo = async () => {
     const response = await httpClient.get(`/stock/company/${symbol}`);
     setCompany(response.data);
   }
