@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import BarLoader from 'react-spinners/BarLoader';
 import httpClient from "../utils/httpClient";
-import SearchForm from '../components/SearchForm';
+import { SearchForm, SearchResultsTable } from '../components';
 
 
 const Trading = ({ username, setMessage }) => {
@@ -57,13 +57,7 @@ const Trading = ({ username, setMessage }) => {
         )}
       </div>
       <div>
-        {results.map((stock) => {
-          return (
-            <div key={stock.id}>
-              {stock.symbol} - {stock.description}
-            </div>
-          );
-        })}
+        {results && <SearchResultsTable results={results} />}
       </div>
     </div>
   );
