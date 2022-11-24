@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import BarLoader from 'react-spinners/BarLoader';
 import httpClient from "../utils/httpClient";
+import SearchForm from '../components/SearchForm';
 
 
 const Trading = ({ username, setMessage }) => {
@@ -43,42 +44,27 @@ const Trading = ({ username, setMessage }) => {
       <em className='text-muted'>
         Search for stocks by ticker symbol or company name.
       </em>
-
-      <Form onSubmit={handleSubmit}>
-        <Row className="mb-3">
-          <Col>
-            <Form.Control
-              type="text"
-              placeholder="Search for..."
-              data-testid="search-input"
-              value={search}
-              onChange={handleSearch}
-            />
-          </Col>
-          <Col md="auto">
-            <Button variant="primary" type="submit" data-testid="search-button">
-              Search
-            </Button>
-          </Col>
-        </Row>
-        <Row>
-          {loading && (
-            <div className="d-flex mt-5 justify-content-center">
-              <BarLoader color={'#325D88'} />
+      <SearchForm
+        handleSubmit={handleSubmit}
+        search={search}
+        handleSearch={handleSearch}
+      />
+      <div>
+        {loading && (
+          <div className="d-flex mt-5 justify-content-center">
+            <BarLoader color={'#325D88'} />
+          </div>
+        )}
+      </div>
+      <div>
+        {results.map((stock) => {
+          return (
+            <div key={stock.id}>
+              {stock.symbol} - {stock.description}
             </div>
-          )}
-        </Row>
-        <Row>
-          {results.map((stock) => {
-            return (
-              <div key={stock.id}>
-                {stock.symbol} - {stock.description}
-              </div>
-            );
-          })}
-        </Row>
-      </Form>
-
+          );
+        })}
+      </div>
     </div>
   );
 }
