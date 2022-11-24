@@ -35,8 +35,14 @@ const Portfolio = ({ username, setMessage }) => {
         ? (
           <div>
             <h2>Portfolio Summary</h2>
+            <em className='text-muted'>
+              Total portfolio performance to date.
+            </em>
             <Summary summary={portfolio.summary} />
             <h2>Positions</h2>
+            <em className='text-muted'>
+              Click stock symbol for details, Trade button to buy or sell.
+            </em>
             <Positions positions={portfolio.positions} />
           </div>
         )
