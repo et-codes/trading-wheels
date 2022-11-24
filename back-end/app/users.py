@@ -41,7 +41,8 @@ def check_user(username):
 
 @app.route('/user', methods=['DELETE'])
 def delete_user():
-    (username, password) = request.json.values()
+    username = request.json['username']
+    password = request.json['password']
 
     user = get_user(username)
     if user is None:
@@ -56,7 +57,8 @@ def delete_user():
 
 @app.route('/user/login', methods=['POST'])
 def login():
-    (username, password) = request.json.values()
+    username = request.json['username']
+    password = request.json['password']
     user = get_user(username)
 
     if user is None:
@@ -71,8 +73,9 @@ def login():
     else:
         return 'Incorrect password.', 401
 
-@app.route('/user/logout/<string:username>')
-def logout(username):
+@app.route('/user/logout', methods=['POST'])
+def logout():
+    username = request.json['username']
     user = get_user(username)
     user.last_logout = func.now()
     db.session.commit()

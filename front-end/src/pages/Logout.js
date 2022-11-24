@@ -11,7 +11,7 @@ const Logout = ({ username, setUsername, setMessage }) => {
     const errorHandler = new ErrorHandler(setMessage);
     const logout = async () => {
       try {
-        const response = await axios.get(`user/logout/${username}`);
+        const response = await axios.post(`user/logout`, { username });
         localStorage.removeItem('username');
         localStorage.removeItem('token');
         setUsername('');

@@ -64,10 +64,8 @@ class UserTests(unittest.TestCase):
         self.assertGreater(len(response.text), 50)
 
     def test_logout(self):
-        header = self.login_and_get_auth_header()
-
-        url = f'{SERVER_URL}/user/logout/{TEST_USERNAME}'
-        response = requests.get(url, headers=header)
+        url = f'{SERVER_URL}/user/logout'
+        response = requests.post(url, json=self._test_user)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.text, TEST_USERNAME)
 
