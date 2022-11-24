@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Table } from 'react-bootstrap';
 import BarLoader from 'react-spinners/BarLoader';
 import httpClient from "../utils/httpClient";
 import { SearchForm, SearchResultsTable } from '../components';
@@ -41,9 +40,6 @@ const Trading = ({ username, setMessage }) => {
   return (
     <div>
       <h2>Trading</h2>
-      <em className='text-muted'>
-        Search for stocks by ticker symbol or company name.
-      </em>
       <SearchForm
         handleSubmit={handleSubmit}
         search={search}
