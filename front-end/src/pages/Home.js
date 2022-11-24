@@ -4,7 +4,7 @@ import { BoldLink } from '../components';
 import photo from './images/stock.jpg';
 
 
-const Home = () => {
+const Home = ({ username }) => {
   const links = {
     tyler: "https://unsplash.com/@tprahm?utm_source=unsplash&" +
       "utm_medium=referral&utm_content=creditCopyText",
@@ -49,9 +49,9 @@ const Home = () => {
         </div>
       </div>
       <div className="d-grid gap-2 mt-3">
-        <Button variant="primary" size="lg" as={Link} to="/login">
+        {!username && <Button variant="primary" size="lg" as={Link} to="/login">
           Log in to get started!
-        </Button>
+        </Button>}
       </div>
     </div>
   );

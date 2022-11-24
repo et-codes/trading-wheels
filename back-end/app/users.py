@@ -31,11 +31,12 @@ def create_user():
 def get_user(username):
     return User.query.filter_by(username=username).first()
 
-@app.route('/user/<string:username>')
-def check_user(username):
-    user = get_user(username)
+@app.route('/user', methods=['GET'])
+def return_user():
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
     if user is None:
-        return f'User {username} not found.', 404
+        return f'User not found.', 404
     else:
         return user.username
 

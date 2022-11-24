@@ -1,4 +1,4 @@
-import axios from 'axios';
+import httpClient from "./utils/httpClient";
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
@@ -8,14 +8,20 @@ import { Header, Footer, InfoBar } from './components';
 
 const App = () => {
 
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const [username, setUsername] = useState(localStorage.getItem('username') || '');
+  const [username, setUsername] = useState('');
   const [message, setMessage] = useState({ text: '', variant: '' });
 
-
+  // Log in user if server session is still valid
   useEffect(() => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  }, [token]);
+    (async () => {
+      try {
+        const resp = await httpClient.get("/user");
+        setUsername(resp.data);
+      } catch (error) {
+        console.log("Not authenticated.");
+      }
+    })();
+  }, []);
 
 
   useEffect(() => {
@@ -31,7 +37,7 @@ const App = () => {
       {message.text && <InfoBar message={message} />}
       <Container className="py-3">
         <Routes>
-          <Route path="/" exact element={<Home />} />
+          <Route path="/" element={<Home username={username} />} />
           <Route path="/trading" element={
             <Trading username={username} setMessage={setMessage} />
           } />
@@ -40,7 +46,7 @@ const App = () => {
           } />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={
-            <Login setToken={setToken} setUsername={setUsername} />
+            <Login username={username} setUsername={setUsername} />
           } />
           <Route path="/logout" element={
             <Logout

@@ -1,9 +1,10 @@
-import axios from 'axios';
+import httpClient from "../utils/httpClient";
 import { useState } from 'react';
 import { Button, Container, Form, Alert } from 'react-bootstrap';
+import { Navigate } from "react-router-dom";
 
 
-const Login = ({ setToken, setUsername }) => {
+const Login = ({ username, setUsername }) => {
 
   const [usernameField, setUsernameField] = useState('');
   const [passwordField, setPasswordField] = useState('');
@@ -31,11 +32,12 @@ const Login = ({ setToken, setUsername }) => {
     if (passwordsMatch()) {
       try {
         const newUser = { username: usernameField, password: passwordField };
-        const response = await axios.post('/user', newUser);
+        const response = await httpClient.post('/user', newUser);
         setAlert({
           text: `New user '${response.data.username}' created!`,
           variant: 'success'
         });
+        setUsername(response.data.username);
         return true;
       } catch (error) {
         if (error.response.status === 409) {
@@ -65,11 +67,8 @@ const Login = ({ setToken, setUsername }) => {
   const login = async () => {
     try {
       const user = { username: usernameField, password: passwordField };
-      const response = await axios.post('/user/login', user);
-      setToken(response.data);
+      await httpClient.post('/user/login', user);
       setUsername(usernameField);
-      localStorage.setItem('token', response.data);
-      localStorage.setItem('username', usernameField);
       setAlert({ text: `User '${usernameField}' logged in!`, variant: 'success' });
       return true;
     } catch (error) {
@@ -129,6 +128,7 @@ const Login = ({ setToken, setUsername }) => {
           {newAccountCheck ? 'Register' : 'Login'}
         </Button>
       </Form>
+      {username && <Navigate to="/portfolio" />}
     </Container>
   );
 }

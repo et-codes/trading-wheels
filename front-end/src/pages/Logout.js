@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { ErrorHandler } from '../utils';
+import httpClient from "../utils/httpClient";
+import ErrorHandler from '../utils/errorHandler';
 
 
 const Logout = ({ username, setUsername, setMessage }) => {
@@ -11,9 +11,7 @@ const Logout = ({ username, setUsername, setMessage }) => {
     const errorHandler = new ErrorHandler(setMessage);
     const logout = async () => {
       try {
-        const response = await axios.post(`user/logout`, { username });
-        localStorage.removeItem('username');
-        localStorage.removeItem('token');
+        const response = await httpClient.post(`user/logout`, { username });
         setUsername('');
         setMessage({ text: `Logged out ${response.data}.`, variant: 'secondary' });
       } catch (error) {

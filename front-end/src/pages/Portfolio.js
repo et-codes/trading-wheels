@@ -1,20 +1,20 @@
-import axios from 'axios';
+import httpClient from "../utils/httpClient";
+import ErrorHandler from '../utils/errorHandler';
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { ErrorHandler } from '../utils';
 import { Summary, Positions } from '../components';
 import BarLoader from 'react-spinners/BarLoader';
 
 
 const Portfolio = ({ username, setMessage }) => {
-  const [portfolio, setPortfolio] = useState(null);
 
+  const [portfolio, setPortfolio] = useState(null);
 
   useEffect(() => {
     const errorHandler = new ErrorHandler(setMessage);
     const get_portfolio = async () => {
       try {
-        const response = await axios.get(`/portfolio/${username}`);
+        const response = await httpClient.get(`/portfolio`);
         setPortfolio(response.data);
       } catch (error) {
         errorHandler.log(error);
@@ -30,7 +30,6 @@ const Portfolio = ({ username, setMessage }) => {
     });
     return <Navigate to="/login" />;
   }
-
 
   return (
     <>

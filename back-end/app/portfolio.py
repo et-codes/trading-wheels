@@ -1,5 +1,4 @@
-import tokens
-from flask import request, Response
+from flask import request, Response, session
 from app import app, STARTING_CASH
 from app.users import get_user
 from app.stocks import get_stock_data
@@ -34,13 +33,12 @@ class Position:
         }
 
 
-@app.route('/portfolio/<string:username>')
-def return_portfolio(username: str) -> Response:
-    if not tokens.is_valid(request):
-        return 'Invalid or expired token.', 401
-    user = get_user(username)
+@app.route('/portfolio')
+def return_portfolio() -> Response:
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
     if user is None:
-        return f'Username {username} not found.', 404
+        return 'Not authorized.', 401
     return get_portfolio(user), 200
 
 

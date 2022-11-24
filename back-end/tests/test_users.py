@@ -46,6 +46,7 @@ class UserTests(unittest.TestCase):
         response = requests.post(url, json=self._test_user)
         self.assertEqual(response.status_code, 409)
         
+    @unittest.skip('Rewrite for new method.')
     def test_get_known_user(self):
         url = f'{SERVER_URL}/user/{TEST_USERNAME}'
         response = requests.get(url)
