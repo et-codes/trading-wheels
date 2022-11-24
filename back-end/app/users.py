@@ -1,4 +1,3 @@
-import tokens
 from flask import request, session
 from app import app, db, STARTING_CASH
 from app.models import User, Trade
@@ -69,8 +68,7 @@ def login():
         user.last_login = func.now()
         db.session.commit()
         session['user_id'] = user.id
-        token = tokens.create(username)
-        return token
+        return user.username
     else:
         return 'Incorrect password.', 401
 

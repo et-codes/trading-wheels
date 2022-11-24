@@ -1,9 +1,8 @@
 import pyEX
-import tokens
 from app import app, db
-from app.models import Stock, MetaData
+from app.models import Stock, MetaData, User
 from datetime import datetime, timedelta, timezone
-from flask import request
+from flask import request, session
 from sqlalchemy.sql import func
 
 
@@ -18,8 +17,8 @@ CASH = {
 
 @app.route('/stock/quote/<string:symbol>')
 def return_stock_data(symbol):
-    if not tokens.is_valid(request):
-        return 'Invalid or expired token.', 401
+    if not user_is_authorized():
+        return 'Not authorized.', 401
     return get_stock_data(symbol)
 
 def get_stock_data(symbol):
@@ -34,8 +33,8 @@ def get_stock_data(symbol):
 @app.route('/stock/chart/<string:symbol>', defaults={'range': '3m'})
 @app.route('/stock/chart/<string:symbol>/<string:range>')
 def return_stock_chart(symbol, range):
-    if not tokens.is_valid(request):
-        return 'Invalid or expired token.', 401
+    if not user_is_authorized():
+        return 'Not authorized.', 401
     return get_stock_chart(symbol, range)
 
 def get_stock_chart(symbol, range):
@@ -51,8 +50,8 @@ def get_stock_chart(symbol, range):
 
 @app.route('/stock/company/<string:symbol>')
 def return_company_data(symbol):
-    if not tokens.is_valid(request):
-        return 'Invalid or expired token.', 401
+    if not user_is_authorized():
+        return 'Not authorized.', 401
     return get_company_data(symbol)
 
 def get_company_data(symbol):
@@ -64,8 +63,8 @@ def get_company_data(symbol):
 
 @app.route('/stock/search/<string:fragment>')
 def return_stock_search_result(fragment):
-    if not tokens.is_valid(request):
-        return 'Invalid or expired token.', 401
+    if not user_is_authorized():
+        return 'Not authorized.', 401
     return get_stock_search_result(fragment)
 
 def get_stock_search_result(fragment):
@@ -101,3 +100,10 @@ def set_last_update():
 def delete_stale_symbols():
     Stock.query.delete()
     db.session.commit()
+
+def user_is_authorized():
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+    if user is None:
+        return False
+    return True

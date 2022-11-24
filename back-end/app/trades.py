@@ -1,5 +1,4 @@
-import tokens
-from flask import request
+from flask import request, session
 from app import app, db
 from app.models import User, Trade
 from app.users import get_user
@@ -7,8 +6,8 @@ from app.users import get_user
 
 @app.route('/trade/id/<int:id>')
 def get_trade_by_id(id: int) -> dict:
-    if not tokens.is_valid(request):
-        return 'Invalid or expired token.', 401
+    if not user_is_authorized():
+        return 'Not authorized.', 401
     
     trade = Trade.query.get(id)
     if trade is not None:
@@ -18,8 +17,8 @@ def get_trade_by_id(id: int) -> dict:
 
 @app.route('/trade/user/<string:username>')
 def get_trades_by_username(username: str) -> list[dict]:
-    if not tokens.is_valid(request):
-        return 'Invalid or expired token.', 401
+    if not user_is_authorized():
+        return 'Not authorized.', 401
 
     user = get_user(username)
     if user is None:
@@ -30,8 +29,8 @@ def get_trades_by_username(username: str) -> list[dict]:
 
 @app.route('/trade', methods=['POST'])
 def trade() -> list[dict]:
-    if not tokens.is_valid(request):
-        return 'Invalid or expired token.', 401
+    if not user_is_authorized():
+        return 'Not authorized.', 401
 
     trade_obj = request.json
     user = get_user(trade_obj['username'])
@@ -65,8 +64,8 @@ def create_cash_transaction(trade: Trade, user: User) -> Trade:
 
 @app.route('/trade/id/<int:id>', methods=['DELETE'])
 def delete_trade(id: int) -> str:
-    if not tokens.is_valid(request):
-        return 'Invalid or expired token.', 401
+    if not user_is_authorized():
+        return 'Not authorized.', 401
 
     trade = Trade.query.get(id)
     if trade is not None:
@@ -75,3 +74,10 @@ def delete_trade(id: int) -> str:
         return '', 200
     else:
         return f'Trade id {id} not found.', 404
+
+def user_is_authorized():
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+    if user is None:
+        return False
+    return True
