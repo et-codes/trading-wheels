@@ -47,7 +47,7 @@ const Portfolio = ({ username, setMessage }) => {
           </div>
         )
         : (
-          <div className="d-flex align-items-center justify-content-center">
+          <div className="d-flex mt-5 justify-content-center">
             <BarLoader color={'#325D88'} />
           </div>
         )

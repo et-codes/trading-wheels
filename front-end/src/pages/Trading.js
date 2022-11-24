@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import BarLoader from 'react-spinners/BarLoader';
 import httpClient from "../utils/httpClient";
 
 
 const Trading = ({ username, setMessage }) => {
 
   const [search, setSearch] = useState('');
-  const [searchType, setSearchType] = useState('Symbol');
+  const [loading, setLoading] = useState(false);
 
   if (!username) {
     setMessage({
@@ -17,17 +18,14 @@ const Trading = ({ username, setMessage }) => {
     return <Navigate to="/login" />;
   }
 
-  const handleSelect = (event) => {
-    setSearchType(event.target.value);
-  }
-
   const handleSearch = (event) => {
     setSearch(event.target.value);
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Submit.');
+    setLoading(true);
+    setLoading(false);
   }
 
   return (
@@ -39,12 +37,6 @@ const Trading = ({ username, setMessage }) => {
 
       <Form onSubmit={handleSubmit}>
         <Row>
-          <Col xs lg="3">
-            <Form.Select onChange={handleSelect} defaultValue="Symbol">
-              <option>Symbol</option>
-              <option>Company name</option>
-            </Form.Select>
-          </Col>
           <Col>
             <Form.Control
               type="text"
@@ -59,6 +51,13 @@ const Trading = ({ username, setMessage }) => {
               Search
             </Button>
           </Col>
+        </Row>
+        <Row>
+          {loading && (
+            <div className="d-flex mt-5 justify-content-center">
+              <BarLoader color={'#325D88'} />
+            </div>
+          )}
         </Row>
       </Form>
 
