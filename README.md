@@ -4,12 +4,10 @@ Trading Wheels is a stock trading simulator, currently under development.
 
 ## TODO list
 
-- What happens when the token is expired?
-- Redirect to ... portfolio? ... after logging in.
-- Use cookies to store user info instead of localStorage.
+- What happens in the front end when the server session is expired?
 - Check for error handling where needed.
 - Write tests for the front end.
-- Change "log in to get started!" button on home page to something else if the user is already logged in.
+- Check if backend tests are working after changing to session authorization.
 
 ## Notes
 
