@@ -76,5 +76,5 @@ def logout(username):
     user = get_user(username)
     user.last_logout = func.now()
     db.session.commit()
-    session.pop('user_id')
+    session.pop('user_id', None)
     return username
