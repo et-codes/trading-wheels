@@ -1,4 +1,4 @@
-import axios from 'axios';
+import httpClient from '../utils/httpClient';
 import { useState, useEffect } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
 import { currency } from '../utils/format';
@@ -24,12 +24,12 @@ const StockInfo = ({ symbol }) => {
   }, [symbol]);
 
   const getStockQuote = async (symbol) => {
-    const response = await axios.get(`/stock/quote/${symbol}`);
+    const response = await httpClient.get(`/stock/quote/${symbol}`);
     setQuote(response.data);
   }
 
   const getCompanyInfo = async (symbol) => {
-    const response = await axios.get(`/stock/company/${symbol}`);
+    const response = await httpClient.get(`/stock/company/${symbol}`);
     setCompany(response.data);
   }
 

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import httpClient from '../utils/httpClient';
 import { Chart } from 'react-google-charts';
 import { useState, useEffect } from 'react';
 
@@ -9,7 +9,7 @@ const StockChart = ({ symbol }) => {
 
   useEffect(() => {
     const getChartData = async () => {
-      const response = await axios.get(`/stock/chart/${symbol}`);
+      const response = await httpClient.get(`/stock/chart/${symbol}`);
       const data = response.data.map((point) => {
         const date = new Date(point.date);
         const dateString = `${date.getMonth() + 1}/${date.getDate()}`;

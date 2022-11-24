@@ -6,8 +6,6 @@ import NotFound from './NotFound';
 import Portfolio from './Portfolio';
 import Trading from './Trading';
 
-
-
 export {
   About,
   Home,
