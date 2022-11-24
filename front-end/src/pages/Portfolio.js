@@ -1,5 +1,4 @@
 import httpClient from "../utils/httpClient";
-import ErrorHandler from '../utils/errorHandler';
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Summary, Positions } from '../components';
@@ -11,13 +10,12 @@ const Portfolio = ({ username, setMessage }) => {
   const [portfolio, setPortfolio] = useState(null);
 
   useEffect(() => {
-    const errorHandler = new ErrorHandler(setMessage);
     const get_portfolio = async () => {
       try {
         const response = await httpClient.get(`/portfolio`);
         setPortfolio(response.data);
       } catch (error) {
-        errorHandler.log(error);
+        setMessage({ text: error, variant: 'warning' });
       }
     };
     get_portfolio();
