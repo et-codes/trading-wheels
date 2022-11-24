@@ -88,6 +88,7 @@ const Login = ({ username, setUsername }) => {
 
   return (
     <Container>
+      {username && <Navigate to="/portfolio" />}
       <Alert variant={alert.variant || 'primary'}>
         {alert.text || loginMessage}
       </Alert>
@@ -128,7 +129,6 @@ const Login = ({ username, setUsername }) => {
           {newAccountCheck ? 'Register' : 'Login'}
         </Button>
       </Form>
-      {username && <Navigate to="/portfolio" />}
     </Container>
   );
 }
