@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
 import { currency } from '../utils/format';
 import { StockChart } from './';
+import BarLoader from 'react-spinners/BarLoader';
 
 
 const StockInfo = ({ symbol }) => {
@@ -48,33 +49,46 @@ const StockInfo = ({ symbol }) => {
           <Modal.Title>{company.companyName} ({symbol})</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Table size="sm">
-            <tbody>
-              <tr>
-                <td className="text-muted">Latest price/share:</td>
-                <td>{currency(qoute.latestPrice)}</td>
-              </tr>
-              <tr>
-                <td className="text-muted">CEO:</td>
-                <td>{company.CEO}</td>
-              </tr>
-              <tr>
-                <td className="text-muted">Exchange:</td>
-                <td>{qoute.primaryExchange}</td>
-              </tr>
-              <tr>
-                <td className="text-muted">Location:</td>
-                <td>{company.city}, {company.state}, {company.country}</td>
-              </tr>
-            </tbody>
-          </Table>
-          <StockChart chart={chart} symbol={symbol} />
-          <hr />
-          <p className="text-muted">
-            {String(company.description).length > MAX_LENGTH
-              ? company.description.slice(0, MAX_LENGTH) + '...'
-              : company.description}
-          </p>
+          {
+            chart.length > 0
+              ? (
+                <>
+                  <Table size="sm">
+                    <tbody>
+                      <tr>
+                        <td className="text-muted">Latest price/share:</td>
+                        <td>{currency(qoute.latestPrice)}</td>
+                      </tr>
+                      <tr>
+                        <td className="text-muted">CEO:</td>
+                        <td>{company.CEO}</td>
+                      </tr>
+                      <tr>
+                        <td className="text-muted">Exchange:</td>
+                        <td>{qoute.primaryExchange}</td>
+                      </tr>
+                      <tr>
+                        <td className="text-muted">Location:</td>
+                        <td>{company.city}, {company.state}, {company.country}</td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                  <StockChart chart={chart} symbol={symbol} />
+                  <hr />
+                  <p className="text-muted">
+                    {String(company.description).length > MAX_LENGTH
+                      ? company.description.slice(0, MAX_LENGTH) + '...'
+                      : company.description}
+                  </p>
+                </>
+              )
+              : (
+                <div className="d-flex mt-5 justify-content-center">
+                  <BarLoader color={'#325D88'} />
+                </div>
+              )
+          }
+
         </Modal.Body>
       </Modal>
     </>

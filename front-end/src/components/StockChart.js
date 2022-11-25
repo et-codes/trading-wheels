@@ -1,6 +1,5 @@
 import { Chart } from 'react-google-charts';
 import { useState, useEffect } from 'react';
-import BarLoader from 'react-spinners/BarLoader';
 
 
 const StockChart = ({ symbol, chart }) => {
@@ -20,9 +19,10 @@ const StockChart = ({ symbol, chart }) => {
 
   const chartOptions = {
     title: `${symbol} 3-month Closing Price Chart`,
+    hAxis: { title: "Date" },
     series: {
-      0: { type: "bars", axis: "Volume", targetAxisIndex: 1, color: "#325D88" },
-      1: { type: "line", axis: "Price", targetAxisIndex: 0, color: "#d9534f" }
+      0: { type: "line", targetAxisIndex: 0, color: "#d9534f" },
+      1: { type: "bars", targetAxisIndex: 1, color: "#325D88" },
     },
     vAxes: {
       0: { logScale: false, title: "Price", minValue: 0 },
@@ -38,7 +38,6 @@ const StockChart = ({ symbol, chart }) => {
       height="100%"
       data={chartData}
       options={chartOptions}
-      loader={<BarLoader color={'#325D88'} />}
     />
   );
 }
