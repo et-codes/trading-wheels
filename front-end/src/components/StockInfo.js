@@ -1,9 +1,9 @@
-import httpClient from '../utils/httpClient';
 import { useState, useEffect } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
-import { currency } from '../utils/format';
 import { StockChart } from './';
 import BarLoader from 'react-spinners/BarLoader';
+import httpClient from '../utils/httpClient';
+import { currency } from '../utils/format';
 
 
 const StockInfo = ({ symbol }) => {
@@ -22,6 +22,7 @@ const StockInfo = ({ symbol }) => {
     if (show & symbol !== '$CASH') {
       getStockData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [show, symbol]);
 
   const getStockData = async () => {
