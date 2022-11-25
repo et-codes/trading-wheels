@@ -70,7 +70,11 @@ const StockInfo = ({ symbol }) => {
                       </tr>
                       <tr>
                         <td className="text-muted">Location:</td>
-                        <td>{company.city}, {company.state}, {company.country}</td>
+                        <td>
+                          {company.city}{company.city && ', '}
+                          {company.state}{company.state && ', '}
+                          {company.country}
+                        </td>
                       </tr>
                     </tbody>
                   </Table>
