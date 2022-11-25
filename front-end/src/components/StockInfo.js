@@ -10,6 +10,7 @@ const StockInfo = ({ symbol }) => {
   const [show, setShow] = useState(false);
   const [company, setCompany] = useState({});
   const [qoute, setQuote] = useState({});
+  const [chart, setChart] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -18,20 +19,15 @@ const StockInfo = ({ symbol }) => {
 
   useEffect(() => {
     if (show & symbol !== '$CASH') {
-      getStockQuote(symbol);
-      getCompanyInfo(symbol);
+      getStockData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [show, symbol]);
 
-  const getStockQuote = async () => {
-    const response = await httpClient.get(`/stock/quote/${symbol}`);
-    setQuote(response.data);
-  }
-
-  const getCompanyInfo = async () => {
-    const response = await httpClient.get(`/stock/company/${symbol}`);
-    setCompany(response.data);
+  const getStockData = async () => {
+    const response = await httpClient.get(`/stock/${symbol}`);
+    setCompany(response.data.company);
+    setQuote(response.data.quote);
+    setChart(response.data.chart);
   }
 
   return (
@@ -72,7 +68,7 @@ const StockInfo = ({ symbol }) => {
               </tr>
             </tbody>
           </Table>
-          <StockChart symbol={symbol} />
+          <StockChart chart={chart} symbol={symbol} />
           <hr />
           <p className="text-muted">
             {String(company.description).length > MAX_LENGTH

@@ -1,7 +1,7 @@
 from flask import request, Response, session
 from app import app, STARTING_CASH
 from app.users import get_user
-from app.stocks import get_stock_data
+from app.stocks import get_stock_quote
 from app.models import Trade, User
 
 
@@ -72,7 +72,7 @@ def get_stocks(user: User) -> dict:
 
     stock_prices = {}
     for symbol in symbols:
-        stock_prices[symbol[0]] = get_stock_data(symbol[0])
+        stock_prices[symbol[0]] = get_stock_quote(symbol[0])
 
     return stock_prices
 

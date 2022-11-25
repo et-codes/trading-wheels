@@ -4,6 +4,7 @@ Trading Wheels is a stock trading simulator, currently under development.
 
 ## TODO list
 
+- Combine stock/quote, stock/company, and stock/chart into single endpoint.
 - What happens in the front end when the server session is expired?
 - Check for error handling where needed.
 - Write tests for the front end.

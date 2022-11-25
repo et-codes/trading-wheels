@@ -1,25 +1,22 @@
-import httpClient from '../utils/httpClient';
 import { Chart } from 'react-google-charts';
 import { useState, useEffect } from 'react';
+import BarLoader from 'react-spinners/BarLoader';
 
 
-const StockChart = ({ symbol }) => {
+const StockChart = ({ symbol, chart }) => {
 
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    const getChartData = async () => {
-      const response = await httpClient.get(`/stock/chart/${symbol}`);
-      const data = response.data.map((point) => {
+    if (symbol !== '$CASH') {
+      const data = chart.map((point) => {
         const date = new Date(point.date);
         const dateString = `${date.getMonth() + 1}/${date.getDate()}`;
         return [dateString, point.volume / 1000000, point.close];
       });
       setChartData([['Date', 'Volume', 'Closing Price'], ...data]);
-    };
-    if (symbol !== '$CASH') getChartData();
-  }, [symbol]);
-
+    }
+  }, [symbol, chart]);
 
   const chartOptions = {
     title: `${symbol} 3-month Closing Price Chart`,
@@ -41,6 +38,7 @@ const StockChart = ({ symbol }) => {
       height="100%"
       data={chartData}
       options={chartOptions}
+      loader={<BarLoader color={'#325D88'} />}
     />
   );
 }

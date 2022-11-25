@@ -2,7 +2,7 @@ import pyEX
 from app import app, db
 from app.models import Stock, MetaData, User
 from datetime import datetime, timedelta, timezone
-from flask import request, session
+from flask import session
 from sqlalchemy.sql import func, or_
 
 
@@ -15,13 +15,30 @@ CASH = {
     'primaryExchange': '-'
 }
 
-@app.route('/stock/quote/<string:symbol>')
+@app.route('/stock/search/<string:fragment>')
+def return_stock_search_result(fragment):
+    if not user_is_authorized():
+        return 'Not authorized.', 401
+    return get_stock_search_result(fragment)
+
+@app.route('/stock/<string:symbol>')
 def return_stock_data(symbol):
     if not user_is_authorized():
         return 'Not authorized.', 401
     return get_stock_data(symbol)
 
 def get_stock_data(symbol):
+    quote = get_stock_quote(symbol)
+    company = get_company_data(symbol)
+    chart = get_stock_chart(symbol, '3m')
+    
+    return {
+        'quote': quote,
+        'company': company,
+        'chart': chart
+    }
+
+def get_stock_quote(symbol):
     if symbol == '$CASH':
         return CASH
     try:
@@ -29,13 +46,6 @@ def get_stock_data(symbol):
         return quote
     except pyEX.common.exception.PyEXception:
         return f'Symbol "{symbol}" not found.', 404
-
-@app.route('/stock/chart/<string:symbol>', defaults={'range': '3m'})
-@app.route('/stock/chart/<string:symbol>/<string:range>')
-def return_stock_chart(symbol, range):
-    if not user_is_authorized():
-        return 'Not authorized.', 401
-    return get_stock_chart(symbol, range)
 
 def get_stock_chart(symbol, range):
     allowable_ranges = ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm',
@@ -48,24 +58,12 @@ def get_stock_chart(symbol, range):
     except pyEX.common.exception.PyEXception:
         return f'Symbol "{symbol}" not found.', 404
 
-@app.route('/stock/company/<string:symbol>')
-def return_company_data(symbol):
-    if not user_is_authorized():
-        return 'Not authorized.', 401
-    return get_company_data(symbol)
-
 def get_company_data(symbol):
     try:
         company_data = c.company(symbol)
         return company_data
     except pyEX.common.exception.PyEXception:
         return f'Symbol "{symbol}" not found.', 404
-
-@app.route('/stock/search/<string:fragment>')
-def return_stock_search_result(fragment):
-    if not user_is_authorized():
-        return 'Not authorized.', 401
-    return get_stock_search_result(fragment)
 
 def get_stock_search_result(fragment):
     check_for_stale_symbol_list()
@@ -110,3 +108,4 @@ def user_is_authorized():
     if user is None:
         return False
     return True
+
