@@ -12,7 +12,7 @@ const Portfolio = ({ username, setMessage }) => {
   useEffect(() => {
     const get_portfolio = async () => {
       try {
-        const response = await httpClient.get(`/portfolio`);
+        const response = await httpClient.get(`/api/portfolio`);
         setPortfolio(response.data);
       } catch (error) {
         setMessage({ text: error, variant: 'warning' });

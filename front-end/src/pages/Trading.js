@@ -28,7 +28,7 @@ const Trading = ({ username, setMessage }) => {
     setResults([]);
     setLoading(true);
     try {
-      const response = await httpClient.get(`/stock/search/${search}`);
+      const response = await httpClient.get(`/api/stock/search/${search}`);
       setResults(response.data);
     } catch (error) {
       setMessage({ text: error.message, variant: 'danger' });

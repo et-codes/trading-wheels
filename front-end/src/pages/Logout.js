@@ -8,7 +8,7 @@ const Logout = ({ username, setUsername, setMessage }) => {
   useEffect(() => {
     const logout = async () => {
       try {
-        const response = await httpClient.post(`user/logout`, { username });
+        const response = await httpClient.post(`/apiuser/logout`, { username });
         setUsername('');
         setMessage({ text: `Logged out ${response.data}.`, variant: 'secondary' });
       } catch (error) {

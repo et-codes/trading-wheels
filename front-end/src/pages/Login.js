@@ -32,7 +32,7 @@ const Login = ({ username, setUsername }) => {
     if (passwordsMatch()) {
       try {
         const newUser = { username: usernameField, password: passwordField };
-        const response = await httpClient.post('/user', newUser);
+        const response = await httpClient.post('/api/user', newUser);
         setAlert({
           text: `New user '${response.data.username}' created!`,
           variant: 'success'
@@ -67,7 +67,7 @@ const Login = ({ username, setUsername }) => {
   const login = async () => {
     try {
       const user = { username: usernameField, password: passwordField };
-      await httpClient.post('/user/login', user);
+      await httpClient.post('/api/user/login', user);
       setUsername(usernameField);
       setAlert({ text: `User '${usernameField}' logged in!`, variant: 'success' });
       return true;

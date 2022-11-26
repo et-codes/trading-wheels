@@ -4,7 +4,7 @@ from app.models import User, Trade
 from sqlalchemy.sql import func
 
 
-@app.route('/user', methods=['POST'])
+@app.route('/api/user', methods=['POST'])
 def create_user():
     username = request.json['username']
     password = request.json['password']
@@ -30,7 +30,7 @@ def create_user():
 def get_user(username):
     return User.query.filter_by(username=username).first()
 
-@app.route('/user', methods=['GET'])
+@app.route('/api/user', methods=['GET'])
 def return_user():
     user_id = session.get('user_id')
     user = User.query.get(user_id)
@@ -39,7 +39,7 @@ def return_user():
     else:
         return user.username
 
-@app.route('/user', methods=['DELETE'])
+@app.route('/api/user', methods=['DELETE'])
 def delete_user():
     username = request.json['username']
     password = request.json['password']
@@ -55,7 +55,7 @@ def delete_user():
     else:
         return 'Incorrect password.', 401
 
-@app.route('/user/login', methods=['POST'])
+@app.route('/api/user/login', methods=['POST'])
 def login():
     username = request.json['username']
     password = request.json['password']
@@ -72,7 +72,7 @@ def login():
     else:
         return 'Incorrect password.', 401
 
-@app.route('/user/logout', methods=['POST'])
+@app.route('/api/user/logout', methods=['POST'])
 def logout():
     username = request.json['username']
     user = get_user(username)

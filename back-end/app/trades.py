@@ -4,7 +4,7 @@ from app.models import User, Trade
 from app.users import get_user
 
 
-@app.route('/trade/id/<int:id>')
+@app.route('/api/trade/id/<int:id>')
 def get_trade_by_id(id: int) -> dict:
     if not user_is_authorized():
         return 'Not authorized.', 401
@@ -15,7 +15,7 @@ def get_trade_by_id(id: int) -> dict:
     else:
         return f'Trade id {id} not found.', 404
 
-@app.route('/trade/user/<string:username>')
+@app.route('/api/trade/user/<string:username>')
 def get_trades_by_username(username: str) -> list[dict]:
     if not user_is_authorized():
         return 'Not authorized.', 401
@@ -27,7 +27,7 @@ def get_trades_by_username(username: str) -> list[dict]:
     trades = user.trades
     return [t.json() for t in trades]
 
-@app.route('/trade', methods=['POST'])
+@app.route('/api/trade', methods=['POST'])
 def trade() -> list[dict]:
     if not user_is_authorized():
         return 'Not authorized.', 401
@@ -62,7 +62,7 @@ def create_cash_transaction(trade: Trade, user: User) -> Trade:
     )
     return cash_trade
 
-@app.route('/trade/id/<int:id>', methods=['DELETE'])
+@app.route('/api/trade/id/<int:id>', methods=['DELETE'])
 def delete_trade(id: int) -> str:
     if not user_is_authorized():
         return 'Not authorized.', 401

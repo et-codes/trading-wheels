@@ -15,7 +15,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       try {
-        const resp = await httpClient.get("/user");
+        const resp = await httpClient.get("/api/user");
         setUsername(resp.data);
       } catch (error) {
         console.log("Not authenticated.");

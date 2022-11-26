@@ -33,7 +33,7 @@ class Position:
         }
 
 
-@app.route('/portfolio')
+@app.route('/api/portfolio')
 def return_portfolio() -> Response:
     user_id = session.get('user_id')
     user = User.query.get(user_id)

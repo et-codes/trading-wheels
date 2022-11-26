@@ -26,7 +26,7 @@ const StockInfo = ({ symbol }) => {
   }, [show, symbol]);
 
   const getStockData = async () => {
-    const response = await httpClient.get(`/stock/${symbol}`);
+    const response = await httpClient.get(`/api/stock/${symbol}`);
     setCompany(response.data.company);
     setQuote(response.data.quote);
     setChart(response.data.chart);
