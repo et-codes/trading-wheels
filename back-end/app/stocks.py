@@ -23,6 +23,7 @@ def return_stock_search_result(fragment):
 
 @app.route('/stock/<string:symbol>')
 def return_stock_data(symbol):
+    if symbol == '$CASH': return CASH
     if not user_is_authorized():
         return 'Not authorized.', 401
     return get_stock_data(symbol)
@@ -39,8 +40,6 @@ def get_stock_data(symbol):
     }
 
 def get_stock_quote(symbol):
-    if symbol == '$CASH':
-        return CASH
     try:
         quote = c.quote(symbol, filter='symbol,companyName,latestPrice,primaryExchange')
         return quote
