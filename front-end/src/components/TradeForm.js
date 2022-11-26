@@ -24,11 +24,33 @@ const TradeForm = ({ sharesOwned, cash, price, symbol }) => {
     setSellSelected(true);
   };
 
-  const submitTrade = (event) => {
+  const submitTrade = async (event) => {
     event.preventDefault();
     if (tradeIsValid()) {
       const action = buySelected ? 'Buying' : 'Selling';
-      console.log(`${action} ${shares} shares...`);
+      setAlert({
+        text: `${action} ${shares} shares of ${symbol}...`,
+        variant: 'success'
+      });
+
+      try {
+        const sharesWithSign = buySelected
+          ? parseInt(shares)
+          : parseInt(shares) * -1;
+        const tradeObject = {
+          'symbol': symbol,
+          'shares': sharesWithSign,
+          'price': price
+        }
+        await httpClient.post('/api/trade', tradeObject);
+        setAlert({
+          text: `${action} ${shares} shares of ${symbol}...DONE!`,
+          variant: 'success'
+        });
+      } catch (error) {
+        console.error(error);
+        setAlert({ text: 'Error executing trade.', variant: 'danger' });
+      }
     }
   };
 
@@ -59,11 +81,6 @@ const TradeForm = ({ sharesOwned, cash, price, symbol }) => {
       });
       return false;
     }
-    const action = buySelected ? 'Buying' : 'Selling';
-    setAlert({
-      text: `${action} ${shares} shares of ${symbol}...`,
-      variant: 'success'
-    });
     return true;
   }
 

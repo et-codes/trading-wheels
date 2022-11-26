@@ -29,11 +29,12 @@ def get_trades_by_username(username: str) -> list[dict]:
 
 @app.route('/api/trade', methods=['POST'])
 def trade() -> list[dict]:
-    if not user_is_authorized():
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+    if user is None:
         return 'Not authorized.', 401
 
     trade_obj = request.json
-    user = get_user(trade_obj['username'])
 
     new_trade = create_trade(trade_obj, user)
     cash_trade = create_cash_transaction(new_trade, user)
