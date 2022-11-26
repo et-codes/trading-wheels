@@ -1,7 +1,8 @@
 import httpClient from '../utils/httpClient';
 import { useState, useEffect } from 'react';
 import { Button, Modal, Table } from "react-bootstrap";
-import { currency } from '../utils/format';
+import { currency, number } from '../utils/format';
+import { TradeForm } from './';
 import BarLoader from 'react-spinners/BarLoader';
 
 
@@ -36,7 +37,7 @@ const TradeButton = ({ id: symbol }) => {
         Trade
       </Button>
 
-      <Modal show={show} onHide={() => setShow(false)}>
+      <Modal show={show} onHide={() => setShow(false)} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{company.companyName} ({symbol})</Modal.Title>
         </Modal.Header>
@@ -52,21 +53,26 @@ const TradeButton = ({ id: symbol }) => {
                         <td>{currency(quote.latestPrice)}</td>
                       </tr>
                       <tr>
-                        <td className="text-muted">Owned shares:</td>
-                        <td>9999</td>
+                        <td className="text-muted">Shares owned:</td>
+                        <td>{number(100)}</td>
                       </tr>
                       <tr>
                         <td className="text-muted">Cash balance:</td>
-                        <td>9999</td>
+                        <td>{currency(50000)}</td>
                       </tr>
                       <tr>
-                        <td className="text-muted">Buying power (shares):</td>
-                        <td>Cash / share price</td>
+                        <td className="text-muted">Buying power:</td>
+                        <td>{Math.floor(50000 / quote.latestPrice)} shares</td>
                       </tr>
                     </tbody>
                   </Table>
                   <hr />
-                  <p>Trade form goes here.</p>
+                  <TradeForm
+                    symbol={symbol}
+                    sharesOwned={100}
+                    cash={50000}
+                    price={quote.latestPrice}
+                  />
                 </>
               )
               : (

@@ -9,6 +9,7 @@ import StockChart from "./StockChart";
 import StockInfo from "./StockInfo";
 import Summary from "./Summary";
 import TradeButton from "./TradeButton";
+import TradeForm from "./TradeForm";
 
 
 export {
@@ -23,4 +24,5 @@ export {
   StockInfo,
   Summary,
   TradeButton,
+  TradeForm
 }
