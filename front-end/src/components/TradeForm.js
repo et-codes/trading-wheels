@@ -30,7 +30,7 @@ const TradeForm = ({ sharesOwned, cash, price, symbol }) => {
       const action = buySelected ? 'Buying' : 'Selling';
       setAlert({
         text: `${action} ${shares} shares of ${symbol}...`,
-        variant: 'success'
+        variant: 'info'
       });
 
       try {
