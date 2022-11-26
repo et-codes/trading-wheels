@@ -5,10 +5,6 @@ import { StockInfo, TradeButton } from './';
 
 const Positions = ({ positions }) => {
 
-  const handleClick = (event) => {
-    console.log(event.target.id);
-  }
-
   return (
     <>
       <em className='text-muted'>
@@ -43,7 +39,7 @@ const Positions = ({ positions }) => {
                 </td>
                 <td className="text-center">
                   {position.symbol !== '$CASH' &&
-                    <TradeButton id={position.symbol} onClick={handleClick} />}
+                    <TradeButton id={position.symbol} />}
                 </td>
               </tr>
             );

@@ -4,10 +4,6 @@ import { StockInfo, TradeButton } from './';
 
 const SearchResultsTable = ({ results }) => {
 
-  const handleClick = (event) => {
-    console.log(event.target.id);
-  }
-
   return (
     <>
       <em className='text-muted'>
@@ -30,7 +26,7 @@ const SearchResultsTable = ({ results }) => {
                 </td>
                 <td>{stock.description}</td>
                 <td className="text-center">
-                  <TradeButton id={stock.symbol} onClick={handleClick} />
+                  <TradeButton id={stock.symbol} />
                 </td>
               </tr>
             );

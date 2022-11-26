@@ -9,7 +9,6 @@ import StockChart from "./StockChart";
 import StockInfo from "./StockInfo";
 import Summary from "./Summary";
 import TradeButton from "./TradeButton";
-import TradeModal from "./TradeModal";
 
 
 export {
@@ -24,5 +23,4 @@ export {
   StockInfo,
   Summary,
   TradeButton,
-  TradeModal
 }

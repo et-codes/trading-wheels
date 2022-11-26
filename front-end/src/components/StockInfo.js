@@ -10,7 +10,7 @@ const StockInfo = ({ symbol }) => {
 
   const [show, setShow] = useState(false);
   const [company, setCompany] = useState({});
-  const [qoute, setQuote] = useState({});
+  const [quote, setQuote] = useState({});
   const [chart, setChart] = useState([]);
 
   const handleClose = () => setShow(false);
@@ -19,7 +19,7 @@ const StockInfo = ({ symbol }) => {
   const MAX_LENGTH = 512;
 
   useEffect(() => {
-    if (show & symbol !== '$CASH') {
+    if (show && symbol !== '$CASH') {
       getStockData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,7 +58,7 @@ const StockInfo = ({ symbol }) => {
                     <tbody>
                       <tr>
                         <td className="text-muted">Latest price/share:</td>
-                        <td>{currency(qoute.latestPrice)}</td>
+                        <td>{currency(quote.latestPrice)}</td>
                       </tr>
                       <tr>
                         <td className="text-muted">CEO:</td>
@@ -66,7 +66,7 @@ const StockInfo = ({ symbol }) => {
                       </tr>
                       <tr>
                         <td className="text-muted">Exchange:</td>
-                        <td>{qoute.primaryExchange}</td>
+                        <td>{quote.primaryExchange}</td>
                       </tr>
                       <tr>
                         <td className="text-muted">Location:</td>
@@ -93,7 +93,6 @@ const StockInfo = ({ symbol }) => {
                 </div>
               )
           }
-
         </Modal.Body>
       </Modal>
     </>
