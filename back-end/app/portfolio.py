@@ -62,6 +62,8 @@ def get_positions(user: User) -> list[dict]:
             position.add(trade)
         positions.append(position.json())
     
+    positions.sort(key = lambda p: p['symbol'])
+
     return positions
 
 
