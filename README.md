@@ -4,12 +4,11 @@ Trading Wheels is a stock trading simulator, currently under development.
 
 ## TODO list
 
-- Show message on Trading when no search results found.
 - What happens in the front end when the server session is expired?
-- Fix the damned bugs in the database hits for sessions.
 - Check for error handling where needed.
 - Write tests for the front end.
 - Check if backend tests are working after changing to session authorization.
+- Fix the damned bugs in the database hits for sessions.
 
 ## Notes
 
