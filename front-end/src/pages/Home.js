@@ -31,8 +31,18 @@ const Home = ({ username }) => {
             <span className="text-success fw-bold">$100,000</span>{' '}
             virutal cash to start buying stocks. Once you're logged in,
             you'll have acccess to the{' '}
-            <BoldLink to="/trading">Trade</BoldLink> and{' '}
+            <BoldLink to="/trading">Trading</BoldLink> and{' '}
             <BoldLink to="/portfolio">Portfolio</BoldLink> pages.
+          </p>
+          <p>
+            <BoldLink to="/trading">Trading</BoldLink> - here is where you can
+            search for stocks and see stock details. You can also trade in any{' '}
+            stocks that appear in your results.
+          </p>
+          <p>
+            <BoldLink to="/portfolio">Portfolio</BoldLink> - this is the place
+            to see your entire portfolio - cash balance, stock assets, and
+            your active positions.
           </p>
         </div>
         <div className="col-8">
