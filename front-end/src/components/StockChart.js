@@ -10,7 +10,6 @@ const StockChart = ({ symbol, chart }) => {
     if (symbol !== '$CASH') {
       const data = chart.map((point) => {
         const date = new Date(point.date);
-        const dateString = `${date.getMonth() + 1}/${date.getDate()}`;
         return [date, point.volume / 1000000, point.close];
       });
       setChartData([['Date', 'Volume', 'Closing Price'], ...data]);

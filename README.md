@@ -5,7 +5,6 @@ Trading Wheels is a stock trading simulator, currently under development.
 ## TODO list
 
 - Sort stocks in Positions by symbol.
-- Fix the axes for the stock chart.
 - Show message on Trading when no search results found.
 - What happens in the front end when the server session is expired?
 - Fix the damned bugs in the database hits for sessions.
