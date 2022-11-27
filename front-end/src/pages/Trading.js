@@ -48,6 +48,12 @@ const Trading = ({ username, setMessage }) => {
     try {
       const response = await httpClient.get(`/api/stock/search/${search}`);
       setResults(response.data);
+      if (response.data.length === 0) {
+        setMessage({
+          text: `No results found for "${search}".`,
+          variant: 'info'
+        });
+      }
     } catch (error) {
       setMessage({ text: error.message, variant: 'danger' });
     } finally {
@@ -64,11 +70,11 @@ const Trading = ({ username, setMessage }) => {
         handleSearch={(event) => setSearch(event.target.value)}
       />
       <div>
-        {loading && (
-          <div className="d-flex mt-5 justify-content-center">
+        {loading
+          ? (<div className="d-flex mt-5 justify-content-center">
             <BarLoader color={'#325D88'} />
-          </div>
-        )}
+          </div>)
+          : null}
       </div>
       <div>
         {results.length > 0
