@@ -47,7 +47,7 @@ const TradeForm = ({ sharesOwned, cash, price, symbol, setTradeComplete }) => {
           text: `${action} ${shares} shares of ${symbol}...DONE!`,
           variant: 'success'
         });
-        setTimeout(() => setTradeComplete(true), 2000);
+        setTradeComplete(true);
       } catch (error) {
         console.error(error);
         setAlert({ text: 'Error executing trade.', variant: 'danger' });

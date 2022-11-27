@@ -1,5 +1,5 @@
 import httpClient from '../utils/httpClient';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button, Modal, Table } from "react-bootstrap";
 import { currency, number } from '../utils/format';
 import { TradeForm } from './';
@@ -19,11 +19,11 @@ const TradeButton = ({ id: symbol, portfolio, setTradeComplete }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [show, symbol]);
 
-  const getStockData = async () => {
+  const getStockData = useCallback(async () => {
     const response = await httpClient.get(`/api/stock/${symbol}`);
     setCompany(response.data.company);
     setQuote(response.data.quote);
-  }
+  }, [symbol]);
 
   const positionsOwned = portfolio.positions
     .filter((position) => position.symbol === symbol);
