@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm install --prefix front-end && npm run build --prefix front-end && rm -rd back-end/build && mv front-end/build back-end/build"
+    "build": "npm install --prefix front-end && npm run build --prefix front-end && rm -rf back-end/build && mv front-end/build back-end/build"
   },
   "repository": {
     "type": "git",
