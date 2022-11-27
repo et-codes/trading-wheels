@@ -11,7 +11,7 @@ const StockChart = ({ symbol, chart }) => {
       const data = chart.map((point) => {
         const date = new Date(point.date);
         const dateString = `${date.getMonth() + 1}/${date.getDate()}`;
-        return [dateString, point.volume / 1000000, point.close];
+        return [date, point.volume / 1000000, point.close];
       });
       setChartData([['Date', 'Volume', 'Closing Price'], ...data]);
     }
@@ -19,10 +19,10 @@ const StockChart = ({ symbol, chart }) => {
 
   const chartOptions = {
     title: `${symbol} 3-month Closing Price Chart`,
-    hAxis: { title: "Date" },
+    hAxis: { title: "Date", format: "MMM" },
     series: {
-      0: { type: "line", targetAxisIndex: 0, color: "#d9534f" },
-      1: { type: "bars", targetAxisIndex: 1, color: "#325D88" },
+      0: { type: "bars", targetAxisIndex: 0, color: "#8E8C84" },
+      1: { type: "line", targetAxisIndex: 1, color: "#D9534F" },
     },
     vAxes: {
       0: { logScale: false, title: "Price", minValue: 0 },
