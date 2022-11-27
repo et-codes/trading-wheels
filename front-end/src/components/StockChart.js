@@ -20,8 +20,8 @@ const StockChart = ({ symbol, chart }) => {
     title: `${symbol} 3-month Closing Price Chart`,
     hAxis: { title: "Date", format: "MMM" },
     series: {
-      0: { type: "bars", targetAxisIndex: 0, color: "#8E8C84" },
-      1: { type: "line", targetAxisIndex: 1, color: "#D9534F" },
+      0: { type: "bars", targetAxisIndex: 1, color: "#8E8C84" },
+      1: { type: "line", targetAxisIndex: 0, color: "#D9534F" },
     },
     vAxes: {
       0: { logScale: false, title: "Price", minValue: 0 },
