@@ -1,5 +1,5 @@
 import httpClient from "../utils/httpClient";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Summary, Positions } from '../components';
 import BarLoader from 'react-spinners/BarLoader';
@@ -10,34 +10,25 @@ const Portfolio = ({ username, setMessage }) => {
   const [portfolio, setPortfolio] = useState(null);
   const [tradeComplete, setTradeComplete] = useState(false);
 
-  useEffect(() => {
-    const get_portfolio = async () => {
-      try {
-        const response = await httpClient.get(`/api/portfolio`);
-        setPortfolio(response.data);
-      } catch (error) {
-        setMessage({ text: error, variant: 'warning' });
-      }
-    };
-    get_portfolio();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const getPortfolio = useCallback(async () => {
+    try {
+      const response = await httpClient.get(`/api/portfolio`);
+      setPortfolio(response.data);
+    } catch (error) {
+      setMessage({ text: error, variant: 'warning' });
+    }
+  }, [setMessage]);
 
   useEffect(() => {
-    const get_portfolio = async () => {
-      try {
-        const response = await httpClient.get(`/api/portfolio`);
-        setPortfolio(response.data);
-      } catch (error) {
-        setMessage({ text: error, variant: 'warning' });
-      }
-    };
+    getPortfolio();
+  }, [getPortfolio]);
+
+  useEffect(() => {
     if (tradeComplete) {
       setTradeComplete(false);
-      get_portfolio();
+      getPortfolio();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tradeComplete]);
+  }, [tradeComplete, getPortfolio]);
 
   if (!username) {
     setMessage({
