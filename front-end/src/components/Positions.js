@@ -3,7 +3,7 @@ import { Table } from 'react-bootstrap';
 import { StockInfo, TradeButton } from './';
 
 
-const Positions = ({ positions }) => {
+const Positions = ({ portfolio, setTradeComplete }) => {
 
   return (
     <>
@@ -23,7 +23,7 @@ const Positions = ({ positions }) => {
           </tr>
         </thead>
         <tbody>
-          {positions.map((position) => {
+          {portfolio.positions.map((position) => {
             const gainColor = position.gain_pct >= 0 ? 'text-success' : 'text-danger';
             return (
               <tr key={position.symbol}>
@@ -39,7 +39,11 @@ const Positions = ({ positions }) => {
                 </td>
                 <td className="text-center">
                   {position.symbol !== '$CASH' &&
-                    <TradeButton id={position.symbol} />}
+                    <TradeButton
+                      id={position.symbol}
+                      portfolio={portfolio}
+                      setTradeComplete={setTradeComplete}
+                    />}
                 </td>
               </tr>
             );

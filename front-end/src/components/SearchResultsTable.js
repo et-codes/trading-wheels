@@ -2,7 +2,7 @@ import { Table } from 'react-bootstrap';
 import { StockInfo, TradeButton } from './';
 
 
-const SearchResultsTable = ({ results }) => {
+const SearchResultsTable = ({ results, portfolio, setTradeComplete }) => {
 
   return (
     <>
@@ -26,7 +26,11 @@ const SearchResultsTable = ({ results }) => {
                 </td>
                 <td>{stock.description}</td>
                 <td className="text-center">
-                  <TradeButton id={stock.symbol} />
+                  <TradeButton
+                    id={stock.symbol}
+                    portfolio={portfolio}
+                    setTradeComplete={setTradeComplete}
+                  />
                 </td>
               </tr>
             );

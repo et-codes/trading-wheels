@@ -4,7 +4,8 @@ Trading Wheels is a stock trading simulator, currently under development.
 
 ## TODO list
 
-- Provide sharesOwned and cash to TradeButton > TradeForm.
+- Provide sharesOwned and cash to SearchResultsTable > TradeButton > TradeForm.
+- ... and also to Portfolio > Positions > TradeButton > TradeForm.
 - What to do after trade is executed?
 - What happens in the front end when the server session is expired?
 - Fix the damned bugs in the database hits for sessions.

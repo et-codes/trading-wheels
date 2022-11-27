@@ -6,7 +6,7 @@ import { TradeForm } from './';
 import BarLoader from 'react-spinners/BarLoader';
 
 
-const TradeButton = ({ id: symbol }) => {
+const TradeButton = ({ id: symbol, portfolio, setTradeComplete }) => {
 
   const [company, setCompany] = useState({});
   const [quote, setQuote] = useState({});
@@ -25,6 +25,13 @@ const TradeButton = ({ id: symbol }) => {
     setQuote(response.data.quote);
   }
 
+  const positionsOwned = portfolio.positions
+    .filter((position) => position.symbol === symbol);
+  const sharesOwned = positionsOwned.length > 0
+    ? positionsOwned[0].shares
+    : 0;
+  const cash = portfolio.summary.cash;
+
   return (
     <>
       <Button
@@ -42,45 +49,44 @@ const TradeButton = ({ id: symbol }) => {
           <Modal.Title>{company.companyName} ({symbol})</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {
-            quote.latestPrice
-              ? (
-                <>
-                  <Table size="sm">
-                    <tbody>
-                      <tr>
-                        <td className="text-muted">Latest price/share:</td>
-                        <td>{currency(quote.latestPrice)}</td>
-                      </tr>
-                      <tr>
-                        <td className="text-muted">Shares owned:</td>
-                        <td>{number(100)}</td>
-                      </tr>
-                      <tr>
-                        <td className="text-muted">Cash balance:</td>
-                        <td>{currency(50000)}</td>
-                      </tr>
-                      <tr>
-                        <td className="text-muted">Buying power:</td>
-                        <td>{Math.floor(50000 / quote.latestPrice)} shares</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                  <hr />
-                  <TradeForm
-                    symbol={symbol}
-                    sharesOwned={100}
-                    cash={50000}
-                    price={quote.latestPrice}
-                  />
-                </>
-              )
-              : (
-                <div className="d-flex mt-5 justify-content-center">
-                  <BarLoader color={'#325D88'} />
-                </div>
-              )
-          }
+          {quote.latestPrice
+            ? (
+              <>
+                <Table size="sm">
+                  <tbody>
+                    <tr>
+                      <td className="text-muted">Latest price/share:</td>
+                      <td>{currency(quote.latestPrice)}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-muted">Shares owned:</td>
+                      <td>{number(sharesOwned)}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-muted">Cash balance:</td>
+                      <td>{currency(cash)}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-muted">Buying power:</td>
+                      <td>{Math.floor(cash / quote.latestPrice)} shares</td>
+                    </tr>
+                  </tbody>
+                </Table>
+                <hr />
+                <TradeForm
+                  symbol={symbol}
+                  sharesOwned={sharesOwned}
+                  cash={cash}
+                  price={quote.latestPrice}
+                  setTradeComplete={setTradeComplete}
+                />
+              </>
+            )
+            : (
+              <div className="d-flex mt-5 justify-content-center">
+                <BarLoader color={'#325D88'} />
+              </div>
+            )}
         </Modal.Body>
       </Modal>
     </>

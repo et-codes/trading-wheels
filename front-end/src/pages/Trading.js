@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import BarLoader from 'react-spinners/BarLoader';
 import httpClient from "../utils/httpClient";
@@ -10,6 +10,28 @@ const Trading = ({ username, setMessage }) => {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
+  const [portfolio, setPortfolio] = useState({});
+  const [tradeComplete, setTradeComplete] = useState(false);
+
+  const getPortfolio = useCallback(async () => {
+    try {
+      const response = await httpClient.get(`/api/portfolio`);
+      setPortfolio(response.data);
+    } catch (error) {
+      setMessage({ text: error, variant: 'warning' });
+    }
+  }, [setMessage]);
+
+  useEffect(() => {
+    getPortfolio();
+  }, [getPortfolio]);
+
+  useEffect(() => {
+    if (tradeComplete) {
+      setTradeComplete(false);
+      getPortfolio();
+    }
+  }, [tradeComplete, getPortfolio]);
 
   if (!username) {
     setMessage({
@@ -17,10 +39,6 @@ const Trading = ({ username, setMessage }) => {
       variant: 'warning'
     });
     return <Navigate to="/login" />;
-  }
-
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
   }
 
   const handleSubmit = async (event) => {
@@ -43,7 +61,7 @@ const Trading = ({ username, setMessage }) => {
       <SearchForm
         handleSubmit={handleSubmit}
         search={search}
-        handleSearch={handleSearch}
+        handleSearch={(event) => setSearch(event.target.value)}
       />
       <div>
         {loading && (
@@ -53,7 +71,13 @@ const Trading = ({ username, setMessage }) => {
         )}
       </div>
       <div>
-        {results.length > 0 && <SearchResultsTable results={results} />}
+        {results.length > 0
+          ? <SearchResultsTable
+            results={results}
+            portfolio={portfolio}
+            setTradeComplete={setTradeComplete}
+          />
+          : null}
       </div>
     </div>
   );

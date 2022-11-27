@@ -8,6 +8,7 @@ import BarLoader from 'react-spinners/BarLoader';
 const Portfolio = ({ username, setMessage }) => {
 
   const [portfolio, setPortfolio] = useState(null);
+  const [tradeComplete, setTradeComplete] = useState(false);
 
   useEffect(() => {
     const get_portfolio = async () => {
@@ -19,7 +20,24 @@ const Portfolio = ({ username, setMessage }) => {
       }
     };
     get_portfolio();
-  }, [username, setMessage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const get_portfolio = async () => {
+      try {
+        const response = await httpClient.get(`/api/portfolio`);
+        setPortfolio(response.data);
+      } catch (error) {
+        setMessage({ text: error, variant: 'warning' });
+      }
+    };
+    if (tradeComplete) {
+      setTradeComplete(false);
+      get_portfolio();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tradeComplete]);
 
   if (!username) {
     setMessage({
@@ -37,7 +55,7 @@ const Portfolio = ({ username, setMessage }) => {
             <h2>Portfolio Summary</h2>
             <Summary summary={portfolio.summary} />
             <h2>Positions</h2>
-            <Positions positions={portfolio.positions} />
+            <Positions portfolio={portfolio} setTradeComplete={setTradeComplete} />
           </div>
         )
         : (

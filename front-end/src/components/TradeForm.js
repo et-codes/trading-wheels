@@ -4,7 +4,7 @@ import { Alert, Button, ButtonGroup, Form } from 'react-bootstrap'
 import { currency } from "../utils/format";
 
 
-const TradeForm = ({ sharesOwned, cash, price, symbol }) => {
+const TradeForm = ({ sharesOwned, cash, price, symbol, setTradeComplete }) => {
 
   const [buySelected, setBuySelected] = useState(true);
   const [sellSelected, setSellSelected] = useState(false);
@@ -41,12 +41,13 @@ const TradeForm = ({ sharesOwned, cash, price, symbol }) => {
           'symbol': symbol,
           'shares': sharesWithSign,
           'price': price
-        }
+        };
         await httpClient.post('/api/trade', tradeObject);
         setAlert({
           text: `${action} ${shares} shares of ${symbol}...DONE!`,
           variant: 'success'
         });
+        setTimeout(() => setTradeComplete(true), 2000);
       } catch (error) {
         console.error(error);
         setAlert({ text: 'Error executing trade.', variant: 'danger' });
