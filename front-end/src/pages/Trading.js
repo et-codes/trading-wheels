@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Navigate } from 'react-router-dom';
 import BarLoader from 'react-spinners/BarLoader';
 import httpClient from "../utils/httpClient";
-import { SearchForm, SearchResultsTable } from '../components';
+import { LoginButton, SearchForm, SearchResultsTable } from '../components';
 
 
 const Trading = ({ username, setMessage }) => {
@@ -23,8 +22,15 @@ const Trading = ({ username, setMessage }) => {
   }, [setMessage]);
 
   useEffect(() => {
-    getPortfolio();
-  }, [getPortfolio]);
+    if (username) getPortfolio();
+  }, [username, getPortfolio]);
+
+  useEffect(() => {
+    if (!username) setMessage({
+      text: 'You must log in to use the Portfolio page.',
+      variant: 'warning'
+    });
+  }, [username, setMessage]);
 
   useEffect(() => {
     if (tradeComplete) {
@@ -32,14 +38,6 @@ const Trading = ({ username, setMessage }) => {
       getPortfolio();
     }
   }, [tradeComplete, getPortfolio]);
-
-  if (!username) {
-    setMessage({
-      text: 'You must login to use the Trading page.',
-      variant: 'warning'
-    });
-    return <Navigate to="/login" />;
-  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -60,6 +58,8 @@ const Trading = ({ username, setMessage }) => {
       setLoading(false);
     }
   }
+
+  if (!username) return <LoginButton />
 
   return (
     <div>

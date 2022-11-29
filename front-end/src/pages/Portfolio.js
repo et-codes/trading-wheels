@@ -1,7 +1,6 @@
 import httpClient from "../utils/httpClient";
 import { useState, useEffect, useCallback } from 'react';
-import { Navigate } from 'react-router-dom';
-import { Summary, Positions } from '../components';
+import { LoginButton, Summary, Positions } from '../components';
 import BarLoader from 'react-spinners/BarLoader';
 
 
@@ -20,8 +19,15 @@ const Portfolio = ({ username, setMessage }) => {
   }, [setMessage]);
 
   useEffect(() => {
-    getPortfolio();
-  }, [getPortfolio]);
+    if (username) getPortfolio();
+  }, [username, getPortfolio]);
+
+  useEffect(() => {
+    if (!username) setMessage({
+      text: 'You must log in to use the Portfolio page.',
+      variant: 'warning'
+    });
+  }, [username, setMessage]);
 
   useEffect(() => {
     if (tradeComplete) {
@@ -30,13 +36,7 @@ const Portfolio = ({ username, setMessage }) => {
     }
   }, [tradeComplete, getPortfolio]);
 
-  if (!username) {
-    setMessage({
-      text: 'You must login to use the Portfolio page.',
-      variant: 'warning'
-    });
-    return <Navigate to="/login" />;
-  }
+  if (!username) return <LoginButton />;
 
   return (
     <>

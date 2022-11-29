@@ -1,6 +1,5 @@
-import { Button, Image } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { BoldLink } from '../components';
+import { Image } from 'react-bootstrap';
+import { BoldLink, LoginButton } from '../components';
 import photo from './images/stock.jpg';
 
 
@@ -58,11 +57,7 @@ const Home = ({ username }) => {
           </p>
         </div>
       </div>
-      <div className="d-grid gap-2 mt-3">
-        {!username && <Button variant="primary" size="lg" as={Link} to="/login">
-          Log in to get started!
-        </Button>}
-      </div>
+      {!username && <LoginButton />}
     </div>
   );
 }

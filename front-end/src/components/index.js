@@ -2,6 +2,7 @@ import BoldLink from "./BoldLink";
 import Footer from "./Footer";
 import Header from "./Header";
 import InfoBar from "./InfoBar";
+import LoginButton from "./LoginButton";
 import Positions from "./Positions";
 import SearchForm from "./SearchForm";
 import SearchResultsTable from "./SearchResultsTable";
@@ -17,6 +18,7 @@ export {
   Footer,
   Header,
   InfoBar,
+  LoginButton,
   Positions,
   SearchForm,
   SearchResultsTable,
