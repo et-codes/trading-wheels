@@ -21,6 +21,7 @@ def create_user():
     except Exception as err:
         return f'Server error: {err=}.', 500
     else:
+        session.permanent = True
         session['user_id'] = new_user.id
         cash = Trade(user=new_user, symbol='$CASH', shares=STARTING_CASH, price=1)
         db.session.add(cash)
@@ -67,6 +68,7 @@ def login():
     if user.check_password(password):
         user.last_login = func.now()
         db.session.commit()
+        session.permanent = True
         session['user_id'] = user.id
         return user.username
     else:
