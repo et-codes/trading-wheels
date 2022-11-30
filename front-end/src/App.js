@@ -18,7 +18,7 @@ const App = () => {
         const resp = await httpClient.get("/api/user");
         setUsername(resp.data);
       } catch (error) {
-        console.log("Not authenticated.");
+        console.log(error.message);
       }
     })();
   }, []);

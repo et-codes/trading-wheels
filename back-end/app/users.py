@@ -37,12 +37,10 @@ def get_user_by_username(username):
 
 @app.route('/api/user', methods=['GET'])
 def return_user():
-    username = request.json['username']
-    user = get_user_by_username(username)
-    if user is None:
-        return f'User not found.', 404
+    if current_user.is_authenticated:
+        return current_user.username
     else:
-        return user.username
+        return f'User not logged in.', 404
 
 @app.route('/api/user', methods=['DELETE'])
 def delete_user():
