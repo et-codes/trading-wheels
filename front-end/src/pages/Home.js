@@ -18,7 +18,8 @@ const Home = ({ username }) => {
         <h1>Welcome to Trading Wheels!</h1>
         <em className="h6 text-secondary">
           The fantasy stock-trading simulation where you can practice your
-          investing skills with virtual money!
+          investing skills with virtual money!<br />
+          Like training wheels for your bike! Learn how to trade without all the risk!
         </em>
       </Row>
       <Row>
