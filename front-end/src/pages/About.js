@@ -18,7 +18,7 @@ Source code is available on my [GitHub]("https://github.com/et-codes/trading-whe
 * The client bundle and API endpoints are served with the Flask framework.
 * The interface with the PostgreSQL database is implemented with \`Flask-SQLAlchemy\`.
 * \`Flask-Migrations\` is used for building and updating the database tables based on the declarative models.
-* Login persistence is managed with server sessions.
+* Login persistence is managed with sessions via the \`Flask-Login\` module.
 
 ## Client details
 
