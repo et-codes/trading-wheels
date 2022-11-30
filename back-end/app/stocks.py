@@ -17,13 +17,13 @@ CASH = {
 
 @app.route('/api/stock/search/<string:fragment>')
 def return_stock_search_result(fragment):
-    if not user_is_authorized():
+    if not current_user.is_authenticated:
         return 'Not authorized.', 401
     return get_stock_search_result(fragment)
 
 @app.route('/api/stock/<string:symbol>')
 def return_stock_data(symbol):
-    if not user_is_authorized():
+    if not current_user.is_authenticated:
         return 'Not authorized.', 401
     if symbol == '$CASH': return CASH
     return get_stock_data(symbol)
@@ -101,9 +101,3 @@ def set_last_update():
 def delete_stale_symbols():
     Stock.query.delete()
     db.session.commit()
-
-def user_is_authorized():
-    if current_user is None:
-        return False
-    return True
-

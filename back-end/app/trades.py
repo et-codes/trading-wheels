@@ -6,7 +6,7 @@ from app.models import User, Trade
 
 @app.route('/api/trade/id/<int:id>')
 def get_trade_by_id(id: int) -> dict:
-    if not user_is_authorized():
+    if not current_user.is_authenticated:
         return 'Not authorized.', 401
     
     trade = Trade.query.get(id)
@@ -17,7 +17,7 @@ def get_trade_by_id(id: int) -> dict:
 
 @app.route('/api/trade/user')
 def get_trades_by_user() -> list[dict]:
-    if not user_is_authorized():
+    if not current_user.is_authenticated:
         return 'Not authorized.', 401
     
     trades = current_user.trades
@@ -25,7 +25,7 @@ def get_trades_by_user() -> list[dict]:
 
 @app.route('/api/trade', methods=['POST'])
 def trade() -> list[dict]:
-    if current_user is None:
+    if not current_user.is_authenticated:
         return 'Not authorized.', 401
 
     trade_obj = request.json
@@ -59,7 +59,7 @@ def create_cash_transaction(trade: Trade, user: User) -> Trade:
 
 @app.route('/api/trade/id/<int:id>', methods=['DELETE'])
 def delete_trade(id: int) -> str:
-    if not user_is_authorized():
+    if not current_user.is_authenticated:
         return 'Not authorized.', 401
 
     trade = Trade.query.get(id)
@@ -69,8 +69,3 @@ def delete_trade(id: int) -> str:
         return '', 200
     else:
         return f'Trade id {id} not found.', 404
-
-def user_is_authorized():
-    if current_user is None:
-        return False
-    return True

@@ -14,7 +14,7 @@ def create_user():
     username = request.json['username']
     password = request.json['password']
 
-    user_exists = User.query.filter_by(username=username).first() is not None
+    user_exists = get_user_by_username(username) is not None
     if user_exists:
         return f'Username {username} already exists.', 409
 
@@ -37,10 +37,12 @@ def get_user_by_username(username):
 
 @app.route('/api/user', methods=['GET'])
 def return_user():
-    if current_user is None:
+    username = request.json['username']
+    user = get_user_by_username(username)
+    if user is None:
         return f'User not found.', 404
     else:
-        return current_user.username
+        return user.username
 
 @app.route('/api/user', methods=['DELETE'])
 def delete_user():

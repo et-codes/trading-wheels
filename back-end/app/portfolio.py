@@ -35,9 +35,9 @@ class Position:
 
 @app.route('/api/portfolio')
 def return_portfolio() -> Response:
-    if current_user is None:
-        return 'Not authorized.', 401
-    return get_portfolio(current_user), 200
+    if current_user.is_authenticated:
+        return get_portfolio(current_user), 200
+    return 'Not authorized.', 401
 
 
 def get_portfolio(user: User) -> list[dict]:
