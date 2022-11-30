@@ -1,7 +1,7 @@
-from flask import request, session
+from flask import request
+from flask_login import current_user
 from app import app, db
 from app.models import User, Trade
-from app.users import get_user
 
 
 @app.route('/api/trade/id/<int:id>')
@@ -15,29 +15,23 @@ def get_trade_by_id(id: int) -> dict:
     else:
         return f'Trade id {id} not found.', 404
 
-@app.route('/api/trade/user/<string:username>')
-def get_trades_by_username(username: str) -> list[dict]:
+@app.route('/api/trade/user')
+def get_trades_by_user() -> list[dict]:
     if not user_is_authorized():
         return 'Not authorized.', 401
-
-    user = get_user(username)
-    if user is None:
-        return f'Username {username} not found.', 404
     
-    trades = user.trades
+    trades = current_user.trades
     return [t.json() for t in trades]
 
 @app.route('/api/trade', methods=['POST'])
 def trade() -> list[dict]:
-    user_id = session.get('user_id')
-    user = User.query.get(user_id)
-    if user is None:
+    if current_user is None:
         return 'Not authorized.', 401
 
     trade_obj = request.json
 
-    new_trade = create_trade(trade_obj, user)
-    cash_trade = create_cash_transaction(new_trade, user)
+    new_trade = create_trade(trade_obj, current_user)
+    cash_trade = create_cash_transaction(new_trade, current_user)
 
     db.session.add(new_trade)
     db.session.add(cash_trade)
@@ -77,8 +71,6 @@ def delete_trade(id: int) -> str:
         return f'Trade id {id} not found.', 404
 
 def user_is_authorized():
-    user_id = session.get('user_id')
-    user = User.query.get(user_id)
-    if user is None:
+    if current_user is None:
         return False
     return True

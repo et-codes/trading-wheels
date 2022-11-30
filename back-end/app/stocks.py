@@ -1,8 +1,8 @@
 import pyEX
 from app import app, db
-from app.models import Stock, MetaData, User
+from app.models import Stock, MetaData
 from datetime import datetime, timedelta, timezone
-from flask import session
+from flask_login import current_user
 from sqlalchemy.sql import func, or_
 
 
@@ -23,9 +23,9 @@ def return_stock_search_result(fragment):
 
 @app.route('/api/stock/<string:symbol>')
 def return_stock_data(symbol):
-    if symbol == '$CASH': return CASH
     if not user_is_authorized():
         return 'Not authorized.', 401
+    if symbol == '$CASH': return CASH
     return get_stock_data(symbol)
 
 def get_stock_data(symbol):
@@ -103,9 +103,7 @@ def delete_stale_symbols():
     db.session.commit()
 
 def user_is_authorized():
-    user_id = session.get('user_id')
-    user = User.query.get(user_id)
-    if user is None:
+    if current_user is None:
         return False
     return True
 

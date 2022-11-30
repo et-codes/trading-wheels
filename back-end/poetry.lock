@@ -142,6 +142,18 @@ Flask = ">=0.9"
 Six = "*"
 
 [[package]]
+name = "flask-login"
+version = "0.6.2"
+description = "User authentication and session management for Flask."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Flask = ">=1.0.4"
+Werkzeug = ">=1.0.1"
+
+[[package]]
 name = "flask-migrate"
 version = "3.1.0"
 description = "SQLAlchemy database migrations for Flask applications using Alembic."
@@ -153,17 +165,6 @@ python-versions = ">=3.6"
 alembic = ">=0.7"
 Flask = ">=0.9"
 Flask-SQLAlchemy = ">=1.0"
-
-[[package]]
-name = "flask-sessionstore"
-version = "0.4.5"
-description = "Adds session support to your Flask application"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-Flask = ">=0.8"
 
 [[package]]
 name = "flask-sqlalchemy"
@@ -758,7 +759,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "ba8e4fc17524e8a80895c8fd45d231dd90978609d6377309ab2d94e6e6746de2"
+content-hash = "86e737ca4dd8805c0676342dd0cb85903b0f80f2ff0c0fe369d7c20c11ede2df"
 
 [metadata.files]
 alembic = [
@@ -813,13 +814,13 @@ flask-cors = [
     {file = "Flask-Cors-3.0.10.tar.gz", hash = "sha256:b60839393f3b84a0f3746f6cdca56c1ad7426aa738b70d6c61375857823181de"},
     {file = "Flask_Cors-3.0.10-py2.py3-none-any.whl", hash = "sha256:74efc975af1194fc7891ff5cd85b0f7478be4f7f59fe158102e91abb72bb4438"},
 ]
+flask-login = [
+    {file = "Flask-Login-0.6.2.tar.gz", hash = "sha256:c0a7baa9fdc448cdd3dd6f0939df72eec5177b2f7abe6cb82fc934d29caac9c3"},
+    {file = "Flask_Login-0.6.2-py3-none-any.whl", hash = "sha256:1ef79843f5eddd0f143c2cd994c1b05ac83c0401dc6234c143495af9a939613f"},
+]
 flask-migrate = [
     {file = "Flask-Migrate-3.1.0.tar.gz", hash = "sha256:57d6060839e3a7f150eaab6fe4e726d9e3e7cffe2150fb223d73f92421c6d1d9"},
     {file = "Flask_Migrate-3.1.0-py3-none-any.whl", hash = "sha256:a6498706241aba6be7a251078de9cf166d74307bca41a4ca3e403c9d39e2f897"},
-]
-flask-sessionstore = [
-    {file = "Flask-Sessionstore-0.4.5.tar.gz", hash = "sha256:010de35ab9f0d9423c2f79c5131e00843c063f847c4ebee204cb034b98cb40f4"},
-    {file = "Flask_Sessionstore-0.4.5-py2.py3-none-any.whl", hash = "sha256:c4ff03d5abe3e5048cf3435c930eda090f54efe77cffa6201247cd63f6c7ee4b"},
 ]
 flask-sqlalchemy = [
     {file = "Flask-SQLAlchemy-3.0.2.tar.gz", hash = "sha256:16199f5b3ddfb69e0df2f52ae4c76aedbfec823462349dabb21a1b2e0a2b65e9"},

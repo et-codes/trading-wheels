@@ -1,8 +1,13 @@
 from flask import request, session
-from app import app, db, STARTING_CASH
+from flask_login import login_user, logout_user, current_user
+from app import app, db, STARTING_CASH, login_manager
 from app.models import User, Trade
 from sqlalchemy.sql import func
 
+
+@login_manager.user_loader
+def load_user(user_id: str) -> User:
+    return User.query.get(int(user_id))
 
 @app.route('/api/user', methods=['POST'])
 def create_user():
@@ -21,31 +26,28 @@ def create_user():
     except Exception as err:
         return f'Server error: {err=}.', 500
     else:
-        session.permanent = True
-        session['user_id'] = new_user.id
+        login_user(new_user, remember=True)
         cash = Trade(user=new_user, symbol='$CASH', shares=STARTING_CASH, price=1)
         db.session.add(cash)
         db.session.commit()
         return new_user.json(), 201
 
-def get_user(username):
+def get_user_by_username(username):
     return User.query.filter_by(username=username).first()
 
 @app.route('/api/user', methods=['GET'])
 def return_user():
-    user_id = session.get('user_id')
-    user = User.query.get(user_id)
-    if user is None:
+    if current_user is None:
         return f'User not found.', 404
     else:
-        return user.username
+        return current_user.username
 
 @app.route('/api/user', methods=['DELETE'])
 def delete_user():
     username = request.json['username']
     password = request.json['password']
 
-    user = get_user(username)
+    user = get_user_by_username(username)
     if user is None:
         return f'User {username} not found.', 404
     
@@ -60,7 +62,7 @@ def delete_user():
 def login():
     username = request.json['username']
     password = request.json['password']
-    user = get_user(username)
+    user = get_user_by_username(username)
 
     if user is None:
         return 'Invalid username.', 401
@@ -68,17 +70,15 @@ def login():
     if user.check_password(password):
         user.last_login = func.now()
         db.session.commit()
-        session.permanent = True
-        session['user_id'] = user.id
-        return user.username
+        login_user(user, remember=True)
+        return current_user.username
     else:
         return 'Incorrect password.', 401
 
 @app.route('/api/user/logout', methods=['POST'])
 def logout():
-    username = request.json['username']
-    user = get_user(username)
-    user.last_logout = func.now()
+    username = current_user.username
+    current_user.last_logout = func.now()
     db.session.commit()
-    session.pop('user_id', None)
+    logout_user()
     return username

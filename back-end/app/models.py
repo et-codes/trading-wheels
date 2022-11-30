@@ -1,9 +1,10 @@
 from app import db
 from sqlalchemy.sql import func
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -16,7 +17,7 @@ class User(db.Model):
     trades = db.relationship('Trade', backref='user', cascade='delete')
 
     def __repr__(self):
-        return f"User(username='{self.username}', password=<...>)"
+        return f"User(username='{self.username}')"
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

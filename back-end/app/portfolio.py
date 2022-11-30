@@ -1,6 +1,6 @@
-from flask import request, Response, session
+from flask import Response
+from flask_login import current_user
 from app import app, STARTING_CASH
-from app.users import get_user
 from app.stocks import get_stock_quote
 from app.models import Trade, User
 
@@ -35,11 +35,9 @@ class Position:
 
 @app.route('/api/portfolio')
 def return_portfolio() -> Response:
-    user_id = session.get('user_id')
-    user = User.query.get(user_id)
-    if user is None:
+    if current_user is None:
         return 'Not authorized.', 401
-    return get_portfolio(user), 200
+    return get_portfolio(current_user), 200
 
 
 def get_portfolio(user: User) -> list[dict]:
