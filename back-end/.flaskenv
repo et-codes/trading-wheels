@@ -1,2 +1,1 @@
 FLASK_APP=trading_wheels.py
-FLASK_DEBUG=1
