@@ -66,6 +66,7 @@ const Login = ({ username, setUsername }) => {
 
   const login = async () => {
     try {
+      setAlert({ text: `Logging in '${usernameField}'...`, variant: 'info' });
       const user = { username: usernameField, password: passwordField };
       await httpClient.post('/api/user/login', user);
       setUsername(usernameField);
