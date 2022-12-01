@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["et-codes <104942211+et-codes@users.noreply.github.com>"]
 license = "LICENSE"
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
