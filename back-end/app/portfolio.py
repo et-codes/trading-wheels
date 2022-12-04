@@ -58,7 +58,8 @@ def get_positions(user: User) -> list[dict]:
         trades = filter(lambda t: t.symbol == symbol, all_trades)
         for trade in trades:
             position.add(trade)
-        positions.append(position.json())
+        if position.total_shares > 0:
+            positions.append(position.json())
     
     positions.sort(key = lambda p: p['symbol'])
 
