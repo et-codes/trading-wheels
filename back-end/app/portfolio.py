@@ -74,11 +74,6 @@ def get_positions(user: User) -> list[dict]:
     return positions
 
 
-def cleanup_position(trades):
-    """Delete trades for stock if all shares are sold"""
-
-
-
 def get_stocks(user: User) -> dict:
     """Get stock data for each distinct stock in user's trade history"""
     symbols = Trade.query.with_entities(Trade.symbol) \
