@@ -1,6 +1,6 @@
 from flask import Response
 from flask_login import current_user
-from app import app, STARTING_CASH
+from app import app, db, STARTING_CASH
 from app.stocks import get_stock_quote
 from app.models import Trade, User
 
@@ -20,7 +20,10 @@ class Position:
         self.total_shares += trade.shares
         self.total_cost += trade.shares * trade.price
         self.current_value = self.total_shares * self.current_share_price
-        self.gain = (self.current_value / self.total_cost - 1) * 100
+        if self.total_cost > 0:
+            self.gain = (self.current_value / self.total_cost - 1) * 100
+        else:
+            self.gain = 0
 
     def json(self) -> dict:
         return {
@@ -55,15 +58,25 @@ def get_positions(user: User) -> list[dict]:
     positions = []
     for symbol, stock_data in stocks.items():
         position = Position(stock_data)
-        trades = filter(lambda t: t.symbol == symbol, all_trades)
+        trades = list(filter(lambda t: t.symbol == symbol, all_trades))
         for trade in trades:
             position.add(trade)
-        if position.total_shares > 0:
+        if position.total_shares == 0:
+            # Delete trade history for stock if all shares are sold
+            for trade in trades:
+                db.session.delete(trade)
+            db.session.commit()
+        else:
             positions.append(position.json())
     
     positions.sort(key = lambda p: p['symbol'])
 
     return positions
+
+
+def cleanup_position(trades):
+    """Delete trades for stock if all shares are sold"""
+
 
 
 def get_stocks(user: User) -> dict:
