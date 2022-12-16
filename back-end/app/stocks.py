@@ -1,12 +1,10 @@
-import pyEX
 from app import app, db
 from app.models import Stock, MetaData
 from datetime import datetime, timedelta, timezone
 from flask_login import current_user
+from app.iex import quote, get_symbols
 from sqlalchemy.sql import func, or_
 
-
-c = pyEX.Client(version='stable');
 
 CASH = {
     'symbol': '$CASH',
@@ -26,44 +24,11 @@ def return_stock_data(symbol):
     if not current_user.is_authenticated:
         return 'Not authorized.', 401
     if symbol == '$CASH': return CASH
-    return get_stock_data(symbol)
+    return quote(symbol)
 
-def get_stock_data(symbol):
-    quote = get_stock_quote(symbol)
-    company = get_company_data(symbol)
-    chart = get_stock_chart(symbol, '3m')
-    
-    return {
-        'quote': quote,
-        'company': company,
-        'chart': chart
-    }
-
-def get_stock_quote(symbol):
+def get_stock_quote(symbol: str):
     if symbol == '$CASH': return CASH
-    try:
-        quote = c.quote(symbol, filter='symbol,companyName,latestPrice,primaryExchange')
-        return quote
-    except pyEX.common.exception.PyEXception:
-        return f'Symbol "{symbol}" not found.', 404
-
-def get_stock_chart(symbol, range):
-    allowable_ranges = ['max', '5y', '2y', '1y', 'ytd', '6m', '3m', '1m', '1mm',
-		'5d', '5dm', '1d']
-    if range not in allowable_ranges:
-        return f'Range must be in {allowable_ranges}.', 400
-    try:
-        chart = c.chart(symbol, timeframe=range, sort="asc")
-        return chart
-    except pyEX.common.exception.PyEXception:
-        return f'Symbol "{symbol}" not found.', 404
-
-def get_company_data(symbol):
-    try:
-        company_data = c.company(symbol)
-        return company_data
-    except pyEX.common.exception.PyEXception:
-        return f'Symbol "{symbol}" not found.', 404
+    return quote(symbol)['quote']
 
 def get_stock_search_result(fragment):
     check_for_stale_symbol_list()
@@ -82,7 +47,7 @@ def check_for_stale_symbol_list():
 
 def refresh_symbols():
     delete_stale_symbols()
-    symbol_list = c.symbols(filter='symbol,name')
+    symbol_list = get_symbols()
     for symbol in symbol_list:
         stock = Stock(symbol=symbol['symbol'], description=symbol['name'])
         db.session.add(stock)
