@@ -1,21 +1,20 @@
 from flask import Response
 from flask_login import current_user
 from app import app, db, STARTING_CASH
-from app.stocks import get_stock_quote
+from app.stocks import get_batch_quote
 from app.models import Trade, User
 
 
 class Position:
-
     def __init__(self, stock: dict) -> None:
-        self.symbol = stock['symbol']
-        self.description = stock['companyName']
-        self.current_share_price = stock['latestPrice']
+        self.symbol = stock["symbol"]
+        self.description = stock["companyName"]
+        self.current_share_price = stock["latestPrice"]
         self.current_value = 0
         self.total_shares = 0
         self.total_cost = 0
         self.gain = 0
-    
+
     def add(self, trade: Trade) -> None:
         self.total_shares += trade.shares
         self.total_cost += trade.shares * trade.price
@@ -27,27 +26,27 @@ class Position:
 
     def json(self) -> dict:
         return {
-            'symbol': self.symbol, 
-            'description': self.description, 
-            'shares': self.total_shares, 
-            'cost': self.total_cost, 
-            'value': self.current_value, 
-            'gain_pct': self.gain
+            "symbol": self.symbol,
+            "description": self.description,
+            "shares": self.total_shares,
+            "cost": self.total_cost,
+            "value": self.current_value,
+            "gain_pct": self.gain,
         }
 
 
-@app.route('/api/portfolio')
+@app.route("/api/portfolio")
 def return_portfolio() -> Response:
     if current_user.is_authenticated:
         return get_portfolio(current_user), 200
-    return 'Not authorized.', 401
+    return "Not authorized.", 401
 
 
 def get_portfolio(user: User) -> list[dict]:
     positions = get_positions(user)
     summary = get_portfolio_summary(positions)
-    
-    return {'summary': summary, 'positions': positions}
+
+    return {"summary": summary, "positions": positions}
 
 
 def get_positions(user: User) -> list[dict]:
@@ -68,22 +67,22 @@ def get_positions(user: User) -> list[dict]:
             db.session.commit()
         else:
             positions.append(position.json())
-    
-    positions.sort(key = lambda p: p['symbol'])
+
+    positions.sort(key=lambda p: p["symbol"])
 
     return positions
 
 
 def get_stocks(user: User) -> dict:
     """Get stock data for each distinct stock in user's trade history"""
-    symbols = Trade.query.with_entities(Trade.symbol) \
-        .filter_by(user=user).distinct().all()
+    symbol_query = (
+        Trade.query.with_entities(Trade.symbol).filter_by(user=user).distinct().all()
+    )
 
-    stock_prices = {}
-    for symbol in symbols:
-        stock_prices[symbol[0]] = get_stock_quote(symbol[0])
-
-    return stock_prices
+    # Convert list of tuples [("AAPL",), ...] to list of strings ["AAPL", ...]
+    symbols = [symbol[0] for symbol in symbol_query]
+    stock_quotes = get_batch_quote(symbols)
+    return stock_quotes
 
 
 def get_portfolio_summary(positions: list[dict]) -> dict:
@@ -92,18 +91,18 @@ def get_portfolio_summary(positions: list[dict]) -> dict:
     total_stock_cost = 0
 
     for position in positions:
-        if position['symbol'] == '$CASH':
-            total_cash = position['value']
+        if position["symbol"] == "$CASH":
+            total_cash = position["value"]
         else:
-            total_stock_value += position['value']
-            total_stock_cost += position['cost']
+            total_stock_value += position["value"]
+            total_stock_cost += position["cost"]
 
     total_assets = total_stock_value + total_cash
     gain = (total_assets / STARTING_CASH - 1) * 100
 
     return {
-        'stocks': total_stock_value,
-        'cash': total_cash,
-        'total': total_assets,
-        'gain_pct': gain
+        "stocks": total_stock_value,
+        "cash": total_cash,
+        "total": total_assets,
+        "gain_pct": gain,
     }
