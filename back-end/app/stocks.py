@@ -2,9 +2,11 @@ from app import app, db
 from app.models import Stock, MetaData
 from datetime import datetime, timedelta, timezone
 from flask_login import current_user
-from app.iex import quote, get_symbols, batch_quote
+from app.iex_interface import IEXInterface
 from sqlalchemy.sql import func, or_
 
+
+api = IEXInterface()
 
 CASH = {
     "symbol": "$CASH",
@@ -27,20 +29,20 @@ def return_stock_data(symbol):
         return "Not authorized.", 401
     if symbol == "$CASH":
         return CASH
-    return quote(symbol)
+    return api.quote(symbol)
 
 
 def get_stock_quote(symbol: str):
     if symbol == "$CASH":
         return CASH
-    return quote(symbol)["quote"]
+    return api.quote(symbol)["quote"]
 
 
 def get_batch_quote(symbols: list[str]):
     if "$CASH" in symbols:
         symbols.remove("$CASH")
         add_cash = True
-    batch = batch_quote(symbols)
+    batch = api.batch_quote(symbols)
     if add_cash:
         batch["$CASH"] = CASH
     return batch
@@ -67,7 +69,7 @@ def check_for_stale_symbol_list():
 
 def refresh_symbols():
     delete_stale_symbols()
-    symbol_list = get_symbols()
+    symbol_list = api.get_symbols()
     for symbol in symbol_list:
         stock = Stock(symbol=symbol["symbol"], description=symbol["name"])
         db.session.add(stock)
