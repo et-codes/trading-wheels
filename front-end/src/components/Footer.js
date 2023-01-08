@@ -22,11 +22,11 @@ const Footer = () => {
           GitHub
         </a>
         <a
-          href="https://iexcloud.io"
+          href="https://financialmodelingprep.com/developer/docs/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Data provided by IEX Cloud
+          Data provided by Financial Modeling Prep
         </a>
       </Container>
     </Navbar>
