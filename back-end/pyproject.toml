@@ -18,6 +18,7 @@ flask-migrate = "^3.1.0"
 pyex = "^0.5.0"
 flask-login = "^0.6.2"
 sqlalchemy-cockroachdb = "^1.4.4"
+fmp-python = "^0.1.4"
 
 
 [build-system]

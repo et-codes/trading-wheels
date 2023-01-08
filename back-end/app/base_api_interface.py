@@ -5,12 +5,12 @@ class BaseAPIInterface(ABC):
 
     @abstractmethod
     def quote(self, symbol: str):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def batch_quote(self, symbols: list[str]):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
-    def get_symbols(self, symbol: str):
-        pass
+    def get_symbols(self):
+        raise NotImplementedError

@@ -3,10 +3,11 @@ from app.models import Stock, MetaData
 from datetime import datetime, timedelta, timezone
 from flask_login import current_user
 from app.iex_interface import IEXInterface
+from app.fmp_api_interface import FMPInterface
 from sqlalchemy.sql import func, or_
 
 
-api = IEXInterface()
+api = FMPInterface()
 
 CASH = {
     "symbol": "$CASH",

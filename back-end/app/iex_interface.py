@@ -3,7 +3,6 @@ from app.base_api_interface import BaseAPIInterface
 
 
 class IEXInterface(BaseAPIInterface):
-
     def __init__(self):
         self.api = pyEX.Client(version="stable")
         self.quote_filter = "symbol,companyName,latestPrice,primaryExchange"
