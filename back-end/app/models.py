@@ -3,13 +3,17 @@ from sqlalchemy.sql import func
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+symbol_length = 64
+username_length = 64
+pwhash_length = 128
+desc_length = 256
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
+    username = db.Column(db.String(username_length), index=True, unique=True)
+    password_hash = db.Column(db.String(pwhash_length))
     created_on = db.Column(db.TIMESTAMP(timezone=True),
         server_default=func.now())
     last_login = db.Column(db.TIMESTAMP(timezone=True))
@@ -18,10 +22,10 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User(username='{self.username}')"
-    
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
-    
+
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
@@ -39,7 +43,7 @@ class Trade(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    symbol = db.Column(db.String(16))
+    symbol = db.Column(db.String(symbol_length))
     shares = db.Column(db.Float)
     price = db.Column(db.Float)
     date = db.Column(db.TIMESTAMP(timezone=True),
@@ -65,8 +69,8 @@ class Stock(db.Model):
     __tablename__ = 'stocks'
 
     id = db.Column(db.Integer, primary_key=True)
-    symbol = db.Column(db.String(16))
-    description = db.Column(db.String(256))
+    symbol = db.Column(db.String(symbol_length))
+    description = db.Column(db.String(desc_length))
 
     def __repr__(self):
         return f"Stock(symbol='{self.symbol}', description='{self.description}')"
