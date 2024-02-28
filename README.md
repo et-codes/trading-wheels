@@ -21,7 +21,7 @@ Follow the steps below to run your own local copy of [Trading Wheels](https://et
    1. Set environment variable `SECRET_KEY` to any string you want.
    1. Install [PostgreSQL](https://www.postgresql.org/download/) and create a new database.
    1. Set environment variable `SQLALCHEMY_DATABASE_URI` to the `postgresql://` connection string for your database.
-   1. Set environment variable `IEX_TOKEN` with your [IEX Cloud](https://iexcloud.io/) API token.
+   1. Set environment variable `FMP_API_KEY` with your [Financial Modeling Prep](https://site.financialmodelingprep.com/) API key.
    1. Set environment variable `FLASK_APP` to `trading_wheels.py`.
    1. Run `flask db init` to set up the database migration tool.
    1. Run `flask db migrate` to analyze the schema in the models.
