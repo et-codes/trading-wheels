@@ -63,12 +63,14 @@ def get_stock_search_result(fragment):
 def check_for_stale_symbol_list():
     last_update = MetaData.query.filter(MetaData.key == "last_stock_update").first()
     now = datetime.now(timezone.utc)
-    if last_update is None or last_update.updated <= now - timedelta(hours=24):
-        print("Refreshing stock symbol table...")
+    if last_update is not None:
+        updated = last_update.updated.replace(tzinfo=timezone.utc)
+    if last_update is None or updated <= now - timedelta(hours=24):
         refresh_symbols()
 
 
 def refresh_symbols():
+    print("Refreshing stock symbol table...")
     delete_stale_symbols()
     symbol_list = api.get_symbols()
     for symbol in symbol_list:
